@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="gettingStartedWithBrowserify">
+<head>
+    <title>Getting Started with Browserify</title>
+</head>
+<body ng-controller="MainController as mainController">
+<h2>{{mainController.mainPage.title}}</h2>
+<hr/>
+<div>
+    <a href="#/home">Home</a> |
+    <a href="#/products">Products</a> |
+</div>
+<hr/>
+<div ui-view>
+    Loading...
+</div>
+<hr/>
+<script type="application/javascript" src="lib/angular.min.js"></script>
+<script type="application/javascript" src="lib/angular-ui-router.js"></script>
+<script type="application/javascript" src="src/getting-started-with-browserify.js"></script>
+</body>
+</html>
