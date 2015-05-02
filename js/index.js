@@ -6,8 +6,17 @@
     var ng = require('angular');
     require('angular-ui-router');
     var $script = require("scriptjs");
-    require("./home/browserifyApp.home.js");
-    require("./product/browserifyApp.product.js");
+    var modules = [];
+    modules.push(require("./home/browserifyApp.home.js"));
+    modules.push(require("./product/browserifyApp.product.js"));
+    ng.forEach(modules, function (module) {
+        module.config(function ($controllerProvider) {
+            module.controller = function (name, constructor) {
+                $controllerProvider.register(name, constructor);
+                return (this);
+            };
+        });
+    });
 
     var browserifyApp = ng.module('browserifyApp', ['ui.router', 'browserifyApp.home', "browserifyApp.product"]);
     browserifyApp.controller("MainController", [function () {
@@ -34,5 +43,7 @@
             });
     }]);
     $script("build/home/HomeController.js", function (error) {
+    });
+    $script("build/product/ProductController.js", function (error) {
     });
 })(require);

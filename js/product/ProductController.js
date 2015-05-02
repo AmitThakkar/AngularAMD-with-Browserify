@@ -1,11 +1,11 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (require) {
+(function (ng) {
     'use strict';
-    var productApp = require("./browserifyApp.product.js");
+    var productApp = ng.module("browserifyApp.product");
     productApp.controller("ProductController", [function () {
         var productController = this;
         productController.page = "Product Page";
     }]);
-})(require);
+})(angular);
