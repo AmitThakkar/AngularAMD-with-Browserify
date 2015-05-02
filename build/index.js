@@ -3,6 +3,7 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (require) {
+    'use strict';
     var homeApp = require("./browserifyApp.home.js");
     homeApp.controller("HomeController", [function () {
         var homeController = this;
@@ -14,6 +15,7 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function(ng, require) {
+    'use strict';
     module.exports = ng.module('browserifyApp.home', []);
     require("./HomeController.js");
 })(angular, require);
@@ -25,7 +27,7 @@
     'use strict';
     var ng = require('angular');
     require('angular-ui-router');
-    //var $script = require("scriptjs").$script;
+    //var $script = require("scriptjs");
     require("./home/browserifyApp.home.js");
     require("./product/browserifyApp.product.js");
 
@@ -59,6 +61,7 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (require) {
+    'use strict';
     var productApp = require("./browserifyApp.product.js");
     productApp.controller("ProductController", [function () {
         var productController = this;
@@ -70,6 +73,7 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function(ng, require) {
+    'use strict';
     module.exports = ng.module('browserifyApp.product', []);
     require("./ProductController.js");
 })(angular, require);

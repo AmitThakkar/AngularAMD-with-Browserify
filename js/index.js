@@ -5,7 +5,7 @@
     'use strict';
     var ng = require('angular');
     require('angular-ui-router');
-    //var $script = require("scriptjs").$script;
+    //var $script = require("scriptjs");
     require("./home/browserifyApp.home.js");
     require("./product/browserifyApp.product.js");
 
