@@ -1,10 +1,10 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng) {
-    var productApp = ng.module('browserifyApp.product');
+(function (require) {
+    var productApp = require("./browserifyApp.product.js");
     productApp.controller("ProductController", [function () {
         var productController = this;
         productController.page = "Product Page";
     }]);
-})(angular);
+})(require);

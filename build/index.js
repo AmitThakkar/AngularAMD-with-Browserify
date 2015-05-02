@@ -2,26 +2,26 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng) {
-    var homeApp = ng.module('browserifyApp.home');
+(function (require) {
+    var homeApp = require("./browserifyApp.home.js");
     homeApp.controller("HomeController", [function () {
         var homeController = this;
         homeController.page = "Home Page";
     }]);
-})(angular);
-},{}],2:[function(require,module,exports){
+})(require);
+},{"./browserifyApp.home.js":2}],2:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function(ng) {
+(function(ng, require) {
     module.exports = ng.module('browserifyApp.home', []);
     require("./HomeController.js");
-})(angular);
+})(angular, require);
 },{"./HomeController.js":1}],3:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
-(function () {
+(function (require) {
     'use strict';
     var ng = require('angular');
     require('angular-ui-router');
@@ -53,26 +53,26 @@
                 resolve: {}
             });
     }]);
-})();
+})(require);
 },{"./home/browserifyApp.home.js":2,"./product/browserifyApp.product.js":5,"angular":8,"angular-ui-router":6}],4:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng) {
-    var productApp = ng.module('browserifyApp.product');
+(function (require) {
+    var productApp = require("./browserifyApp.product.js");
     productApp.controller("ProductController", [function () {
         var productController = this;
         productController.page = "Product Page";
     }]);
-})(angular);
-},{}],5:[function(require,module,exports){
+})(require);
+},{"./browserifyApp.product.js":5}],5:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function(ng) {
+(function(ng, require) {
     module.exports = ng.module('browserifyApp.product', []);
     require("./ProductController.js");
-})(angular);
+})(angular, require);
 },{"./ProductController.js":4}],6:[function(require,module,exports){
 /**
  * State-based routing for AngularJS

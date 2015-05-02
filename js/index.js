@@ -1,7 +1,7 @@
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
-(function () {
+(function (require) {
     'use strict';
     var ng = require('angular');
     require('angular-ui-router');
@@ -33,4 +33,4 @@
                 resolve: {}
             });
     }]);
-})();
+})(require);

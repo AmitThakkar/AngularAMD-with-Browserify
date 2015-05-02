@@ -1,10 +1,10 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng) {
-    var homeApp = ng.module('browserifyApp.home');
+(function (require) {
+    var homeApp = require("./browserifyApp.home.js");
     homeApp.controller("HomeController", [function () {
         var homeController = this;
         homeController.page = "Home Page";
     }]);
-})(angular);
+})(require);
