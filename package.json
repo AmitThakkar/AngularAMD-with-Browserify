@@ -24,6 +24,7 @@
   "homepage": "https://github.com/AmitThakkar/GettingStartedWithBrowserify",
   "dependencies": {
     "angular": "^1.3.15",
-    "angular-ui-router": "^0.2.14"
+    "angular-ui-router": "^0.2.14",
+    "scriptjs": "^2.5.7"
   }
 }

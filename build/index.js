@@ -1,46 +1,79 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (__dirname){
+/**
+ * Created by Amit Thakkar on 02/05/15.
+ */
+(function (ng) {
+    var homeApp = ng.module('browserifyApp.home');
+    homeApp.controller("HomeController", [function () {
+        var homeController = this;
+        homeController.page = "Home Page";
+    }]);
+})(angular);
+},{}],2:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 02/05/15.
+ */
+(function(ng) {
+    module.exports = ng.module('browserifyApp.home', []);
+    require("./HomeController.js");
+})(angular);
+},{"./HomeController.js":1}],3:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
-(function() {
+(function () {
     'use strict';
     var ng = require('angular');
     require('angular-ui-router');
-    console.log(__dirname)
-    var gettingStartedWithBrowserify = ng.module('gettingStartedWithBrowserify', ['ui.router']);
-    gettingStartedWithBrowserify.controller("MainController", [function () {
+    //var $script = require("scriptjs").$script;
+    require("./home/browserifyApp.home.js");
+    require("./product/browserifyApp.product.js");
+
+    var browserifyApp = ng.module('browserifyApp', ['ui.router', 'browserifyApp.home', "browserifyApp.product"]);
+    browserifyApp.controller("MainController", [function () {
         var mainController = this;
         mainController.mainPage = {
             title: "Getting Started with Browserify"
         };
     }]);
-    gettingStartedWithBrowserify.controller("HomeController", [function() {
-        var homeController = this;
-        homeController.page = "Home Page";
+    browserifyApp.config(['$stateProvider', function ($stateProvider) {
+        $stateProvider
+            .state('product', {
+                url: '/products',
+                templateUrl: 'partials/products.html',
+                controller: "ProductController",
+                controllerAs: 'productController',
+                resolve: {}
+            })
+            .state('home', {
+                url: '/home',
+                templateUrl: 'partials/home.html',
+                controller: "HomeController",
+                controllerAs: 'homeController',
+                resolve: {}
+            });
     }]);
-    gettingStartedWithBrowserify.controller("ProductController", [function() {
+})();
+},{"./home/browserifyApp.home.js":2,"./product/browserifyApp.product.js":5,"angular":8,"angular-ui-router":6}],4:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 02/05/15.
+ */
+(function (ng) {
+    var productApp = ng.module('browserifyApp.product');
+    productApp.controller("ProductController", [function () {
         var productController = this;
         productController.page = "Product Page";
     }]);
-    gettingStartedWithBrowserify.config(['$stateProvider', function ($stateProvider) {
-            $stateProvider
-                .state('product', {
-                    url: '/products',
-                    templateUrl: 'partials/products.html',
-                    controllerAs: 'productController',
-                    controller: "ProductController"
-                })
-                .state('home', {
-                    url: '/home',
-                    templateUrl: 'partials/home.html',
-                    controllerAs: 'homeController',
-                    controller: "HomeController"
-                });
-        }]);
-})();
-}).call(this,"/js")
-},{"angular":4,"angular-ui-router":2}],2:[function(require,module,exports){
+})(angular);
+},{}],5:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 02/05/15.
+ */
+(function(ng) {
+    module.exports = ng.module('browserifyApp.product', []);
+    require("./ProductController.js");
+})(angular);
+},{"./ProductController.js":4}],6:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.14
@@ -4380,7 +4413,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],3:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -30690,8 +30723,8 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],4:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":3}]},{},[1]);
+},{"./angular":7}]},{},[3]);
