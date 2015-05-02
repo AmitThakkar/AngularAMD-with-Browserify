@@ -2,48 +2,78 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
+(function (ng, require) {
+    require('angular-ui-router');
+    var externalModules = [
+        'ui.router'
+    ];
+    var internalModules = [
+        'browserifyApp.home',
+        'browserifyApp.product'
+    ];
+    var internalModuleObjects = [
+        require('./home/browserifyApp.home'),
+        require('./product/browserifyApp.product')
+    ];
+    ng.forEach(internalModuleObjects, function (internalModuleObject) {
+        internalModuleObject.config(['$controllerProvider', '$provide', '$compileProvider',
+            function ($controllerProvider, $provide, $compileProvider) {
+                internalModuleObject.controller = function (name, constructor) {
+                    $controllerProvider.register(name, constructor);
+                    return (this);
+                };
+                internalModuleObject.service = function (name, constructor) {
+                    $provide.service(name, constructor);
+                    return (this);
+                };
+                internalModuleObject.factory = function (name, factory) {
+                    $provide.factory(name, factory);
+                    return (this);
+                };
+                internalModuleObject.value = function (name, value) {
+                    $provide.value(name, value);
+                    return (this);
+                };
+                internalModuleObject.directive = function (name, factory) {
+                    $compileProvider.directive(name, factory);
+                    return (this);
+                };
+            }]);
+    });
+    module.exports.modules = externalModules.concat(internalModules);
+})(angular, require);
+},{"./home/browserifyApp.home":2,"./product/browserifyApp.product":4,"angular-ui-router":5}],2:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 02/05/15.
+ */
 (function (ng) {
     'use strict';
     module.exports = ng.module('browserifyApp.home', []);
 })(angular);
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
 (function (require) {
     'use strict';
     var ng = require('angular');
-    require('angular-ui-router');
-    var $script = require("scriptjs");
-    var modules = [];
-    modules.push(require("./home/browserifyApp.home.js"));
-    modules.push(require("./product/browserifyApp.product.js"));
-    ng.forEach(modules, function (module) {
-        module.config(["$controllerProvider", "$provide", function ($controllerProvider, $provide) {
-            module.controller = function (name, constructor) {
-                $controllerProvider.register(name, constructor);
-                return (this);
-            };
-            module.service = function (name, constructor) {
-                $provide.service(name, constructor);
-                return (this);
-            };
-        }]);
-    });
-    var browserifyApp = ng.module('browserifyApp', ['ui.router', 'browserifyApp.home', "browserifyApp.product"]);
-    browserifyApp.controller("MainController", [function () {
+    var $script = require('scriptjs');
+    var config = require('./config');
+
+    var browserifyApp = ng.module('browserifyApp', config.modules);
+    browserifyApp.controller('MainController', [function () {
         var mainController = this;
         mainController.mainPage = {
-            title: "Getting Started with Browserify"
+            title: 'Getting Started with Browserify'
         };
     }]);
-    var load = function($q, url) {
+    var load = function ($q, url) {
         var deferred = $q.defer();
         $script(url, function (error) {
             if (error) {
                 deferred.reject(error);
             } else {
-                deferred.resolve("Success");
+                deferred.resolve('Success');
             }
         });
         return deferred.promise;
@@ -53,28 +83,28 @@
             .state('product', {
                 url: '/products',
                 templateUrl: 'partials/products.html',
-                controller: "ProductController",
+                controller: 'ProductController',
                 controllerAs: 'productController',
                 resolve: {
-                    load: ["$q", function ($q) {
-                        return load($q, "build/product/ProductController.js");
+                    load: ['$q', function ($q) {
+                        return load($q, 'build/product/product.controller.js');
                     }]
                 }
             })
             .state('home', {
                 url: '/home',
                 templateUrl: 'partials/home.html',
-                controller: "HomeController",
+                controller: 'HomeController',
                 controllerAs: 'homeController',
                 resolve: {
-                    load: ["$q", function ($q) {
-                        return load($q, "build/home/HomeController.js");
+                    load: ['$q', function ($q) {
+                        return load($q, 'build/home/home.controller.js');
                     }]
                 }
             });
     }]);
 })(require);
-},{"./home/browserifyApp.home.js":1,"./product/browserifyApp.product.js":3,"angular":6,"angular-ui-router":4,"scriptjs":7}],3:[function(require,module,exports){
+},{"./config":1,"angular":7,"scriptjs":8}],4:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
@@ -82,7 +112,7 @@
     'use strict';
     module.exports = ng.module('browserifyApp.product', []);
 })(angular);
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.14
@@ -4422,7 +4452,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -30732,11 +30762,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":5}],7:[function(require,module,exports){
+},{"./angular":6}],8:[function(require,module,exports){
 /*!
   * $script.js JS loader & dependency manager
   * https://github.com/ded/script.js
@@ -30857,4 +30887,4 @@ module.exports = angular;
   return $script
 });
 
-},{}]},{},[2]);
+},{}]},{},[3]);
