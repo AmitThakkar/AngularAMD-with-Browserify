@@ -41,20 +41,40 @@
                 templateUrl: 'partials/products.html',
                 controller: "ProductController",
                 controllerAs: 'productController',
-                resolve: {}
+                resolve: {
+                    load: ["$q", function($q) {
+                        var deferred = $q.defer();
+                        $script("build/product/ProductController.js", function (error) {
+                            if(error) {
+                                deferred.reject(error);
+                            } else {
+                                deferred.resolve("Success");
+                            }
+                        });
+                        return deferred.promise;
+                    }]
+                }
             })
             .state('home', {
                 url: '/home',
                 templateUrl: 'partials/home.html',
                 controller: "HomeController",
                 controllerAs: 'homeController',
-                resolve: {}
+                resolve: {
+                    load: ["$q", function($q) {
+                        var deferred = $q.defer();
+                        $script("build/home/HomeController.js", function (error) {
+                            if(error) {
+                                deferred.reject(error);
+                            } else {
+                                deferred.resolve("Success");
+                            }
+                        });
+                        return deferred.promise;
+                    }]
+                }
             });
     }]);
-    $script("build/home/HomeController.js", function (error) {
-    });
-    $script("build/product/ProductController.js", function (error) {
-    });
 })(require);
 },{"./home/browserifyApp.home.js":1,"./product/browserifyApp.product.js":3,"angular":6,"angular-ui-router":4,"scriptjs":7}],3:[function(require,module,exports){
 /**

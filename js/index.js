@@ -32,18 +32,38 @@
                 templateUrl: 'partials/products.html',
                 controller: "ProductController",
                 controllerAs: 'productController',
-                resolve: {}
+                resolve: {
+                    load: ["$q", function($q) {
+                        var deferred = $q.defer();
+                        $script("build/product/ProductController.js", function (error) {
+                            if(error) {
+                                deferred.reject(error);
+                            } else {
+                                deferred.resolve("Success");
+                            }
+                        });
+                        return deferred.promise;
+                    }]
+                }
             })
             .state('home', {
                 url: '/home',
                 templateUrl: 'partials/home.html',
                 controller: "HomeController",
                 controllerAs: 'homeController',
-                resolve: {}
+                resolve: {
+                    load: ["$q", function($q) {
+                        var deferred = $q.defer();
+                        $script("build/home/HomeController.js", function (error) {
+                            if(error) {
+                                deferred.reject(error);
+                            } else {
+                                deferred.resolve("Success");
+                            }
+                        });
+                        return deferred.promise;
+                    }]
+                }
             });
     }]);
-    $script("build/home/HomeController.js", function (error) {
-    });
-    $script("build/product/ProductController.js", function (error) {
-    });
 })(require);
