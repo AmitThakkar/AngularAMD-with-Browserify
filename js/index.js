@@ -17,7 +17,6 @@
             };
         });
     });
-
     var browserifyApp = ng.module('browserifyApp', ['ui.router', 'browserifyApp.home', "browserifyApp.product"]);
     browserifyApp.controller("MainController", [function () {
         var mainController = this;
@@ -25,6 +24,17 @@
             title: "Getting Started with Browserify"
         };
     }]);
+    var load = function($q, url) {
+        var deferred = $q.defer();
+        $script(url, function (error) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve("Success");
+            }
+        });
+        return deferred.promise;
+    };
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('product', {
@@ -33,16 +43,8 @@
                 controller: "ProductController",
                 controllerAs: 'productController',
                 resolve: {
-                    load: ["$q", function($q) {
-                        var deferred = $q.defer();
-                        $script("build/product/ProductController.js", function (error) {
-                            if(error) {
-                                deferred.reject(error);
-                            } else {
-                                deferred.resolve("Success");
-                            }
-                        });
-                        return deferred.promise;
+                    load: ["$q", function ($q) {
+                        return load($q, "build/product/ProductController.js");
                     }]
                 }
             })
@@ -52,16 +54,8 @@
                 controller: "HomeController",
                 controllerAs: 'homeController',
                 resolve: {
-                    load: ["$q", function($q) {
-                        var deferred = $q.defer();
-                        $script("build/home/HomeController.js", function (error) {
-                            if(error) {
-                                deferred.reject(error);
-                            } else {
-                                deferred.resolve("Success");
-                            }
-                        });
-                        return deferred.promise;
+                    load: ["$q", function ($q) {
+                        return load($q, "build/home/HomeController.js");
                     }]
                 }
             });
