@@ -1,5 +1,10 @@
-(function(ng) {
+/**
+ * Created by Amit Thakkar on 01/05/15.
+ */
+(function() {
     'use strict';
+    var ng = require('angular');
+    require('angular-ui-router');
     var gettingStartedWithBrowserify = ng.module('gettingStartedWithBrowserify', ['ui.router']);
     gettingStartedWithBrowserify.controller("MainController", [function () {
         var mainController = this;
@@ -30,4 +35,4 @@
                     controller: "HomeController"
                 });
         }]);
-})(angular);
+})();
