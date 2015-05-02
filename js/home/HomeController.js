@@ -1,11 +1,11 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (require) {
+(function (ng) {
     'use strict';
-    var homeApp = require("./browserifyApp.home.js");
+    var homeApp = ng.module("browserifyApp.home");
     homeApp.controller("HomeController", [function () {
         var homeController = this;
         homeController.page = "Home Page";
     }]);
-})(require);
+})(angular);
