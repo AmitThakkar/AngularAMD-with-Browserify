@@ -2,12 +2,26 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
+(function (ng, require) {
+    'use strict';
+    var homeApp = ng.module("browserifyApp.home");
+    require("./HomeService");
+    homeApp.controller("HomeController", ["HomeService", function (HomeService) {
+        var homeController = this;
+        homeController.page = "Home Page " + HomeService.getName();
+    }]);
+})(angular, require);
+},{"./HomeService":2}],2:[function(require,module,exports){
+/**
+ * Created by amitthakkar on 02/05/15.
+ */
 (function (ng) {
     'use strict';
     var homeApp = ng.module("browserifyApp.home");
-    homeApp.controller("HomeController", [function () {
-        var homeController = this;
-        homeController.page = "Home Page";
+    homeApp.service("HomeService", [function () {
+        this.getName = function() {
+            return "Home Service";
+        };
     }]);
 })(angular);
 },{}]},{},[1]);

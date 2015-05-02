@@ -10,12 +10,29 @@
     modules.push(require("./home/browserifyApp.home.js"));
     modules.push(require("./product/browserifyApp.product.js"));
     ng.forEach(modules, function (module) {
-        module.config(function ($controllerProvider) {
-            module.controller = function (name, constructor) {
-                $controllerProvider.register(name, constructor);
-                return (this);
-            };
-        });
+        module.config(["$controllerProvider", "$provide", "$compileProvider",
+            function ($controllerProvider, $provide, $compileProvider) {
+                module.controller = function (name, constructor) {
+                    $controllerProvider.register(name, constructor);
+                    return (this);
+                };
+                module.service = function (name, constructor) {
+                    $provide.service(name, constructor);
+                    return (this);
+                };
+                module.factory = function (name, factory) {
+                    $provide.factory(name, factory);
+                    return (this);
+                };
+                module.value = function (name, value) {
+                    $provide.value(name, value);
+                    return (this);
+                };
+                module.directive = function (name, factory) {
+                    $compileProvider.directive(name, factory);
+                    return (this);
+                };
+            }]);
     });
     var browserifyApp = ng.module('browserifyApp', ['ui.router', 'browserifyApp.home', "browserifyApp.product"]);
     browserifyApp.controller("MainController", [function () {
@@ -24,7 +41,7 @@
             title: "Getting Started with Browserify"
         };
     }]);
-    var load = function($q, url) {
+    var load = function ($q, url) {
         var deferred = $q.defer();
         $script(url, function (error) {
             if (error) {
