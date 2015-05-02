@@ -4,7 +4,7 @@
 (function (ng, require) {
     'use strict';
     var homeApp = ng.module("browserifyApp.home");
-    require("./HomeService");
+    require("./home.service");
     homeApp.controller("HomeController", ["HomeService", function (HomeService) {
         var homeController = this;
         homeController.page = "Home Page " + HomeService.getName();
