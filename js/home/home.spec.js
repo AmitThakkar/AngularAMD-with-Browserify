@@ -1,17 +1,17 @@
 /**
  * Created by Amit Thakkar on 03/05/15.
  */
-describe("Home: Testing Modules", function () {
-    describe("App Module:", function () {
-
-        var module;
-        beforeEach(function () {
-            module = angular.module("browserifyApp.home");
+describe('Home module test cases', function () {
+    var HomeController,
+        scope;
+    beforeEach(angular.mock.module("browserifyApp.home"));
+    beforeEach(inject(function ($rootScope, $controller) {
+        scope = $rootScope.$new();
+        HomeController = $controller('HomeController', {
+            $scope: scope
         });
-
-        it("should be registered", function () {
-            console.log(module);
-            expect(module).not.to.equal(null);
-        });
+    }));
+    it('says hello world!', function () {
+        expect(scope.name).toEqual('Amit Thakkar');
     });
 });
