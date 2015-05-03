@@ -11,47 +11,32 @@
         'browserifyApp.product'
     ];
     var internalModuleObjects = [
-        require('./home/browserifyApp.home'),
-        require('./product/browserifyApp.product')
+        require('./home/home.main.js'),
+        require('./product/product.main.js')
     ];
-    var states = [
-        {
-            state: 'home',
-            url: '/home',
-            templateUrl: 'app/home/home.html',
-            controller: 'HomeController',
-            controllerAs: 'homeController',
-            deps: ['build/home/home.controller.js']
-        },
-        {
-            state: 'product',
-            url: '/products',
-            templateUrl: 'app/product/products.html',
-            controller: 'ProductController',
-            controllerAs: 'productController',
-            deps: ['build/product/product.controller.js']
-        }
-    ];
+    var states = [];
     ng.forEach(internalModuleObjects, function (internalModuleObject) {
-        internalModuleObject.config(['$controllerProvider', '$provide', '$compileProvider',
+        states = states.concat(internalModuleObject.states);
+        var module = internalModuleObject.module;
+        module.config(['$controllerProvider', '$provide', '$compileProvider',
             function ($controllerProvider, $provide, $compileProvider) {
-                internalModuleObject.controller = function (name, constructor) {
+                module.controller = function (name, constructor) {
                     $controllerProvider.register(name, constructor);
                     return (this);
                 };
-                internalModuleObject.service = function (name, constructor) {
+                module.service = function (name, constructor) {
                     $provide.service(name, constructor);
                     return (this);
                 };
-                internalModuleObject.factory = function (name, factory) {
+                module.factory = function (name, factory) {
                     $provide.factory(name, factory);
                     return (this);
                 };
-                internalModuleObject.value = function (name, value) {
+                module.value = function (name, value) {
                     $provide.value(name, value);
                     return (this);
                 };
-                internalModuleObject.directive = function (name, factory) {
+                module.directive = function (name, factory) {
                     $compileProvider.directive(name, factory);
                     return (this);
                 };
