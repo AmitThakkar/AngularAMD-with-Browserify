@@ -2,16 +2,16 @@
  * Created by Amit Thakkar on 03/05/15.
  */
 describe('Home module test cases', function () {
-    var HomeController,
+    var homeController,
         scope;
     beforeEach(angular.mock.module("browserifyApp.home"));
     beforeEach(inject(function ($rootScope, $controller) {
         scope = $rootScope.$new();
-        HomeController = $controller('HomeController', {
+        homeController = $controller('HomeController', {
             $scope: scope
         });
     }));
     it('says hello world!', function () {
-        expect(scope.name).toEqual('Amit Thakkar');
+        expect(homeController.page).toEqual('Home Page Home Service');
     });
 });

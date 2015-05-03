@@ -8,6 +8,5 @@
     homeApp.controller('HomeController', ['HomeService', '$scope', function (HomeService, $scope) {
         var homeController = this;
         homeController.page = 'Home Page ' + HomeService.getName();
-        $scope.name = 'Amit Thakkar';
     }]);
 })(angular, require);
