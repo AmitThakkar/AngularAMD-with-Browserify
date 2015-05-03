@@ -40,4 +40,22 @@
             }]);
     });
     module.exports.modules = externalModules.concat(internalModules);
+    module.exports.states = [
+        {
+            state: 'home',
+            url: '/home',
+            templateUrl: 'partials/home.html',
+            controller: 'HomeController',
+            controllerAs: 'homeController',
+            controllerUrl: 'build/home/home.controller.js'
+        },
+        {
+            state: 'product',
+            url: '/products',
+            templateUrl: 'partials/products.html',
+            controller: 'ProductController',
+            controllerAs: 'productController',
+            controllerUrl: 'build/product/product.controller.js'
+        }
+    ];
 })(angular, require);

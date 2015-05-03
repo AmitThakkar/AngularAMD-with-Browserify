@@ -41,6 +41,24 @@
             }]);
     });
     module.exports.modules = externalModules.concat(internalModules);
+    module.exports.states = [
+        {
+            state: 'home',
+            url: '/home',
+            templateUrl: 'partials/home.html',
+            controller: 'HomeController',
+            controllerAs: 'homeController',
+            controllerUrl: 'build/home/home.controller.js'
+        },
+        {
+            state: 'product',
+            url: '/products',
+            templateUrl: 'partials/products.html',
+            controller: 'ProductController',
+            controllerAs: 'productController',
+            controllerUrl: 'build/product/product.controller.js'
+        }
+    ];
 })(angular, require);
 },{"./home/browserifyApp.home":2,"./product/browserifyApp.product":4,"angular-ui-router":5}],2:[function(require,module,exports){
 /**
@@ -79,29 +97,18 @@
         return deferred.promise;
     };
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
-        $stateProvider
-            .state('product', {
-                url: '/products',
-                templateUrl: 'partials/products.html',
-                controller: 'ProductController',
-                controllerAs: 'productController',
-                resolve: {
-                    load: ['$q', function ($q) {
-                        return load($q, 'build/product/product.controller.js');
-                    }]
+        ng.forEach(config.states, function (state) {
+            if (state.controllerUrl) {
+                if (!state.resolve) {
+                    state.resolve = {};
                 }
-            })
-            .state('home', {
-                url: '/home',
-                templateUrl: 'partials/home.html',
-                controller: 'HomeController',
-                controllerAs: 'homeController',
-                resolve: {
-                    load: ['$q', function ($q) {
-                        return load($q, 'build/home/home.controller.js');
-                    }]
-                }
-            });
+                state.resolve.deps = ['$q', function ($q) {
+                    return load($q, state.controllerUrl);
+                }];
+            }
+            $stateProvider
+                .state(state.state, state)
+        });
     }]);
 })(require);
 },{"./config":1,"angular":7,"scriptjs":8}],4:[function(require,module,exports){
