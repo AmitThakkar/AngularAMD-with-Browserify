@@ -14,7 +14,7 @@ module.exports = function (config) {
         files: [
             'node_modules/angular/angular.js',
             'node_modules/angular-mocks/angular-mocks.js',
-            'js/**/*.js'
+            'app/**/*.js'
         ],
 
         // list of files to exclude
@@ -23,7 +23,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'js/**/*.js': [ 'browserify' ]
+            'app/**/*.js': [ 'browserify' ]
         },
 
         browserify: {
