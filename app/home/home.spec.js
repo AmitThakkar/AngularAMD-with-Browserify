@@ -1,7 +1,7 @@
 /**
  * Created by Amit Thakkar on 03/05/15.
  */
-describe('Home module test cases', function () {
+describe('Home Module Controller test cases', function () {
     var homeController,
         scope;
     beforeEach(angular.mock.module("browserifyApp.home"));
@@ -11,7 +11,18 @@ describe('Home module test cases', function () {
             $scope: scope
         });
     }));
-    it('says hello world!', function () {
+    it('check that page is having right text', function () {
         expect(homeController.page).toEqual('Home Page Home Service');
+    });
+});
+describe('Home Module, Service test cases', function () {
+    var homeService;
+    beforeEach(angular.mock.module("browserifyApp.home"));
+    beforeEach(inject(function (_HomeService_) {
+        homeService = _HomeService_;
+    }));
+    it('checks service a name', function () {
+        console.log(homeService.getName())
+        expect(homeService.getName()).toEqual('Home Service');
     });
 });

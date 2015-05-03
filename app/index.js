@@ -14,18 +14,18 @@
             title: 'Getting Started with Browserify'
         };
     }]);
-    var loadDependencies = function ($q, deps) {
-        var deferred = $q.defer();
-        $script(deps, function (error) {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                deferred.resolve('Success');
-            }
-        });
-        return deferred.promise;
-    };
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
+        var loadDependencies = function ($q, deps) {
+            var deferred = $q.defer();
+            $script(deps, function (error) {
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve('Success');
+                }
+            });
+            return deferred.promise;
+        };
         ng.forEach(config.states, function (state) {
             if (state.deps) {
                 if (!state.resolve) {
@@ -35,8 +35,7 @@
                     return loadDependencies($q, state.deps);
                 }];
             }
-            $stateProvider
-                .state(state.state, state)
+            $stateProvider.state(state.state, state)
         });
     }]);
 })(require);
