@@ -3,10 +3,10 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (ng, require) {
-    require('angular-ui-router');
     var externalModules = [
         'ui.router'
     ];
+    require('angular-ui-router');
     var internalModules = [
         'browserifyApp.home',
         'browserifyApp.product'
@@ -14,6 +14,24 @@
     var internalModuleObjects = [
         require('./home/browserifyApp.home'),
         require('./product/browserifyApp.product')
+    ];
+    var states = [
+        {
+            state: 'home',
+            url: '/home',
+            templateUrl: 'partials/home.html',
+            controller: 'HomeController',
+            controllerAs: 'homeController',
+            deps: ['build/home/home.controller.js']
+        },
+        {
+            state: 'product',
+            url: '/products',
+            templateUrl: 'partials/products.html',
+            controller: 'ProductController',
+            controllerAs: 'productController',
+            deps: ['build/product/product.controller.js', 'build/home/home.controller.js']
+        }
     ];
     ng.forEach(internalModuleObjects, function (internalModuleObject) {
         internalModuleObject.config(['$controllerProvider', '$provide', '$compileProvider',
@@ -40,25 +58,9 @@
                 };
             }]);
     });
-    module.exports.modules = externalModules.concat(internalModules);
-    module.exports.states = [
-        {
-            state: 'home',
-            url: '/home',
-            templateUrl: 'partials/home.html',
-            controller: 'HomeController',
-            controllerAs: 'homeController',
-            controllerUrl: 'build/home/home.controller.js'
-        },
-        {
-            state: 'product',
-            url: '/products',
-            templateUrl: 'partials/products.html',
-            controller: 'ProductController',
-            controllerAs: 'productController',
-            controllerUrl: 'build/product/product.controller.js'
-        }
-    ];
+    var exports = module.exports;
+    exports.modules = externalModules.concat(internalModules);
+    exports.states = states;
 })(angular, require);
 },{"./home/browserifyApp.home":2,"./product/browserifyApp.product":4,"angular-ui-router":5}],2:[function(require,module,exports){
 /**
@@ -85,9 +87,9 @@
             title: 'Getting Started with Browserify'
         };
     }]);
-    var load = function ($q, url) {
+    var loadDependencies = function ($q, deps) {
         var deferred = $q.defer();
-        $script(url, function (error) {
+        $script(deps, function (error) {
             if (error) {
                 deferred.reject(error);
             } else {
@@ -98,12 +100,12 @@
     };
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
         ng.forEach(config.states, function (state) {
-            if (state.controllerUrl) {
+            if (state.deps) {
                 if (!state.resolve) {
                     state.resolve = {};
                 }
                 state.resolve.deps = ['$q', function ($q) {
-                    return load($q, state.controllerUrl);
+                    return loadDependencies($q, state.deps);
                 }];
             }
             $stateProvider

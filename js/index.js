@@ -14,9 +14,9 @@
             title: 'Getting Started with Browserify'
         };
     }]);
-    var load = function ($q, url) {
+    var loadDependencies = function ($q, deps) {
         var deferred = $q.defer();
-        $script(url, function (error) {
+        $script(deps, function (error) {
             if (error) {
                 deferred.reject(error);
             } else {
@@ -27,12 +27,12 @@
     };
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
         ng.forEach(config.states, function (state) {
-            if (state.controllerUrl) {
+            if (state.deps) {
                 if (!state.resolve) {
                     state.resolve = {};
                 }
                 state.resolve.deps = ['$q', function ($q) {
-                    return load($q, state.controllerUrl);
+                    return loadDependencies($q, state.deps);
                 }];
             }
             $stateProvider
