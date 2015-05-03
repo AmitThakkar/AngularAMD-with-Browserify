@@ -18,7 +18,7 @@
         {
             state: 'home',
             url: '/home',
-            templateUrl: 'partials/home.html',
+            templateUrl: 'js/home/home.html',
             controller: 'HomeController',
             controllerAs: 'homeController',
             deps: ['build/home/home.controller.js']
@@ -26,7 +26,7 @@
         {
             state: 'product',
             url: '/products',
-            templateUrl: 'partials/products.html',
+            templateUrl: 'js/product/products.html',
             controller: 'ProductController',
             controllerAs: 'productController',
             deps: ['build/product/product.controller.js']

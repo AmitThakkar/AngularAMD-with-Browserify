@@ -4,11 +4,11 @@
  */
 (function (ng, require) {
     'use strict';
-    var homeApp = ng.module("browserifyApp.home");
-    require("./home.service");
-    homeApp.controller("HomeController", ["HomeService", function (HomeService) {
+    var homeApp = ng.module('browserifyApp.home');
+    require('./home.service');
+    homeApp.controller('HomeController', ['HomeService', '$scope', function (HomeService, $scope) {
         var homeController = this;
-        homeController.page = "Home Page " + HomeService.getName();
+        homeController.page = 'Home Page ' + HomeService.getName();
     }]);
 })(angular, require);
 },{"./home.service":2}],2:[function(require,module,exports){
