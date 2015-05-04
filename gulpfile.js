@@ -27,36 +27,36 @@
             .pipe(browserify())
             .pipe(gulpif(isProduction, uglify()))
             .pipe(gulp.dest('build'))
-            .pipe(livereload())
-            .pipe(notify({
+            .pipe(gulpif(!isProduction, livereload()))
+            .pipe(gulpif(!isProduction, notify({
                 title: projectName,
                 message: 'browserifyAMD task executed',
                 sound: sound
-            }));
+            })));
     });
     gulp.task('browserifyHome', function () {
         return gulp.src(['app/home/home.controller.js'])
             .pipe(browserify())
             .pipe(gulpif(isProduction, uglify()))
             .pipe(gulp.dest('build/home'))
-            .pipe(livereload())
-            .pipe(notify({
+            .pipe(gulpif(!isProduction, livereload()))
+            .pipe(gulpif(!isProduction, notify({
                 title: projectName,
                 message: 'browserifyHome task executed',
                 sound: sound
-            }));
+            })));
     });
     gulp.task('browserifyProduct', function () {
         return gulp.src(['app/product/product.controller.js'])
             .pipe(browserify())
             .pipe(gulpif(isProduction, uglify()))
             .pipe(gulp.dest('build/product'))
-            .pipe(livereload())
-            .pipe(notify({
+            .pipe(gulpif(!isProduction, livereload()))
+            .pipe(gulpif(!isProduction, notify({
                 title: projectName,
                 message: 'browserifyProduct task executed',
                 sound: sound
-            }));
+            })));
     });
     gulp.task('browserify', function (callback) {
         runSequence('browserifyAMD', 'browserifyHome', 'browserifyProduct', callback);
