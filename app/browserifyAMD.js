@@ -15,10 +15,6 @@
     });
 
     var browserifyApp = ng.module('browserifyApp', config.dependModules);
-    browserifyApp.controller('MainController', [function () {
-        var mainController = this;
-        mainController.title = 'Getting Started with Browserify';
-    }]);
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
         var loadDependencies = function ($q, deps) {
             var deferred = $q.defer();
