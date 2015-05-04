@@ -7,8 +7,13 @@
         uglify = require('gulp-uglify'),
         gulpif = require('gulp-if'),
         open = require("gulp-open"),
-        runSequence = require('run-sequence');
+        runSequence = require('run-sequence'),
+        rimraf = require('rimraf');
+
     var isProduction = true;
+    gulp.task('clear', function (callback) {
+        rimraf('./build', callback);
+    });
     gulp.task('setDevEnvironment', function () {
         isProduction = false;
     });
@@ -41,7 +46,9 @@
             .pipe(open("", options));
     });
     gulp.task('dev', function (callback) {
-        runSequence('setDevEnvironment', 'browserify', 'open', callback);
+        runSequence('clear', 'setDevEnvironment', 'browserify', 'open', callback);
     });
-    gulp.task('default', ['browserify'])
+    gulp.task('default', function(callback) {
+        runSequence('clear', 'browserify', callback);
+    });
 })(require);
