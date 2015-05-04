@@ -14,13 +14,7 @@
         require('./home/home.main.js'),
         require('./product/product.main.js')
     ];
-    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
-    var states = [];
-    ng.forEach(internalModuleObjects, function (internalModuleObject) {
-        states = states.concat(internalModuleObject.states);
-        addDynamicBehaviourSupportToModule(internalModuleObject.module);
-    });
     var exports = module.exports;
-    exports.modules = externalModules.concat(internalModules);
-    exports.states = states;
+    exports.dependModules = externalModules.concat(internalModules);
+    exports.internalModuleObjects = internalModuleObjects;
 })(angular, require, module);

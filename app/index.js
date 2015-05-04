@@ -7,7 +7,14 @@
     var $script = require('scriptjs');
     var config = require('./config');
 
-    var browserifyApp = ng.module('browserifyApp', config.modules);
+    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
+    var states = [];
+    ng.forEach(config.internalModuleObjects, function (internalModuleObject) {
+        states = states.concat(internalModuleObject.states);
+        addDynamicBehaviourSupportToModule(internalModuleObject.module);
+    });
+
+    var browserifyApp = ng.module('browserifyApp', config.dependModules);
     browserifyApp.controller('MainController', [function () {
         var mainController = this;
         mainController.title = 'Getting Started with Browserify';
@@ -24,7 +31,7 @@
             });
             return deferred.promise;
         };
-        ng.forEach(config.states, function (state) {
+        ng.forEach(states, function (state) {
             if (state.deps) {
                 if (!state.resolve) {
                     state.resolve = {};

@@ -15,17 +15,11 @@
         require('./home/home.main.js'),
         require('./product/product.main.js')
     ];
-    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
-    var states = [];
-    ng.forEach(internalModuleObjects, function (internalModuleObject) {
-        states = states.concat(internalModuleObject.states);
-        addDynamicBehaviourSupportToModule(internalModuleObject.module);
-    });
     var exports = module.exports;
     exports.modules = externalModules.concat(internalModules);
-    exports.states = states;
+    exports.internalModuleObjects = internalModuleObjects;
 })(angular, require, module);
-},{"./dynamicBehaviour":2,"./home/home.main.js":3,"./product/product.main.js":5,"angular-ui-router":6}],2:[function(require,module,exports){
+},{"./home/home.main.js":3,"./product/product.main.js":5,"angular-ui-router":6}],2:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 04/05/15.
  */
@@ -88,6 +82,13 @@
     var $script = require('scriptjs');
     var config = require('./config');
 
+    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
+    var states = [];
+    ng.forEach(config.internalModuleObjects, function (internalModuleObject) {
+        states = states.concat(internalModuleObject.states);
+        addDynamicBehaviourSupportToModule(internalModuleObject.module);
+    });
+
     var browserifyApp = ng.module('browserifyApp', config.modules);
     browserifyApp.controller('MainController', [function () {
         var mainController = this;
@@ -105,7 +106,7 @@
             });
             return deferred.promise;
         };
-        ng.forEach(config.states, function (state) {
+        ng.forEach(states, function (state) {
             if (state.deps) {
                 if (!state.resolve) {
                     state.resolve = {};
@@ -118,7 +119,7 @@
         });
     }]);
 })(require);
-},{"./config":1,"angular":8,"scriptjs":9}],5:[function(require,module,exports){
+},{"./config":1,"./dynamicBehaviour":2,"angular":8,"scriptjs":9}],5:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
