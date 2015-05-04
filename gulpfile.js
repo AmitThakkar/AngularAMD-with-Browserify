@@ -9,9 +9,13 @@
         open = require("gulp-open"),
         runSequence = require('run-sequence'),
         livereload = require('gulp-livereload'),
+        notify = require("gulp-notify"),
         rimraf = require('rimraf');
 
-    var isProduction = true;
+    var isProduction = true,
+        projectName = "AngularAMD with Browserify",
+        sound = "Frog";
+
     gulp.task('clear', function (callback) {
         rimraf('./build', callback);
     });
@@ -23,21 +27,36 @@
             .pipe(browserify())
             .pipe(gulpif(isProduction, uglify()))
             .pipe(gulp.dest('build'))
-            .pipe(livereload());
+            .pipe(livereload())
+            .pipe(notify({
+                title: projectName,
+                message: 'browserifyAMD task executed',
+                sound: sound
+            }));
     });
     gulp.task('browserifyHome', function () {
         return gulp.src(['app/home/home.controller.js'])
             .pipe(browserify())
             .pipe(gulpif(isProduction, uglify()))
             .pipe(gulp.dest('build/home'))
-            .pipe(livereload());
+            .pipe(livereload())
+            .pipe(notify({
+                title: projectName,
+                message: 'browserifyHome task executed',
+                sound: sound
+            }));
     });
     gulp.task('browserifyProduct', function () {
         return gulp.src(['app/product/product.controller.js'])
             .pipe(browserify())
             .pipe(gulpif(isProduction, uglify()))
             .pipe(gulp.dest('build/product'))
-            .pipe(livereload());
+            .pipe(livereload())
+            .pipe(notify({
+                title: projectName,
+                message: 'browserifyProduct task executed',
+                sound: sound
+            }));
     });
     gulp.task('browserify', function (callback) {
         runSequence('browserifyAMD', 'browserifyHome', 'browserifyProduct', callback);
@@ -58,7 +77,7 @@
     gulp.task('dev', function (callback) {
         runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', callback);
     });
-    gulp.task('default', function(callback) {
+    gulp.task('default', function (callback) {
         runSequence('clear', 'browserify', callback);
     });
 })(require);
