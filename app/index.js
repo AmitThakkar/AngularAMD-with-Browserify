@@ -10,9 +10,7 @@
     var browserifyApp = ng.module('browserifyApp', config.modules);
     browserifyApp.controller('MainController', [function () {
         var mainController = this;
-        mainController.mainPage = {
-            title: 'Getting Started with Browserify'
-        };
+        mainController.title = 'Getting Started with Browserify';
     }]);
     browserifyApp.config(['$stateProvider', function ($stateProvider) {
         var loadDependencies = function ($q, deps) {

@@ -22,7 +22,7 @@ describe('Home Module, Service test cases', function () {
         homeService = _HomeService_;
     }));
     it('checks service a name', function () {
-        console.log(homeService.getName())
+        //dump(homeService.getName());
         expect(homeService.getName()).toEqual('Home Service');
     });
 });
