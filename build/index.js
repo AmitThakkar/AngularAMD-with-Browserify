@@ -2,7 +2,7 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng, require) {
+(function (ng, require, module) {
     var externalModules = [
         'ui.router'
     ];
@@ -15,43 +15,55 @@
         require('./home/home.main.js'),
         require('./product/product.main.js')
     ];
+    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
     var states = [];
     ng.forEach(internalModuleObjects, function (internalModuleObject) {
         states = states.concat(internalModuleObject.states);
-        var module = internalModuleObject.module;
-        module.config(['$controllerProvider', '$provide', '$compileProvider',
-            function ($controllerProvider, $provide, $compileProvider) {
-                module.controller = function (name, constructor) {
-                    $controllerProvider.register(name, constructor);
-                    return (this);
-                };
-                module.service = function (name, constructor) {
-                    $provide.service(name, constructor);
-                    return (this);
-                };
-                module.factory = function (name, factory) {
-                    $provide.factory(name, factory);
-                    return (this);
-                };
-                module.value = function (name, value) {
-                    $provide.value(name, value);
-                    return (this);
-                };
-                module.directive = function (name, factory) {
-                    $compileProvider.directive(name, factory);
-                    return (this);
-                };
-            }]);
+        addDynamicBehaviourSupportToModule(internalModuleObject.module);
     });
     var exports = module.exports;
     exports.modules = externalModules.concat(internalModules);
     exports.states = states;
-})(angular, require);
-},{"./home/home.main.js":2,"./product/product.main.js":4,"angular-ui-router":5}],2:[function(require,module,exports){
+})(angular, require, module);
+},{"./dynamicBehaviour":2,"./home/home.main.js":3,"./product/product.main.js":5,"angular-ui-router":6}],2:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 04/05/15.
+ */
+(function (module) {
+    module.exports = function (module) {
+        module.config(['$controllerProvider', '$provide', '$compileProvider', function ($controllerProvider, $provide, $compileProvider) {
+            module.controller = function (name, constructor) {
+                $controllerProvider.register(name, constructor);
+                return (this);
+            };
+            module.service = function (name, constructor) {
+                $provide.service(name, constructor);
+                return (this);
+            };
+            module.factory = function (name, factory) {
+                $provide.factory(name, factory);
+                return (this);
+            };
+            module.value = function (name, value) {
+                $provide.value(name, value);
+                return (this);
+            };
+            module.constant = function (name, value) {
+                $provide.constant(name, value);
+                return (this);
+            };
+            module.directive = function (name, factory) {
+                $compileProvider.directive(name, factory);
+                return (this);
+            };
+        }]);
+    };
+})(module);
+},{}],3:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng) {
+(function (ng, module) {
     'use strict';
     var exports = module.exports;
     exports.module = ng.module('browserifyApp.home', []);
@@ -65,8 +77,8 @@
             deps: ['build/home/home.controller.js']
         }
     ];
-})(angular);
-},{}],3:[function(require,module,exports){
+})(angular, module);
+},{}],4:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
@@ -106,7 +118,7 @@
         });
     }]);
 })(require);
-},{"./config":1,"angular":7,"scriptjs":8}],4:[function(require,module,exports){
+},{"./config":1,"angular":8,"scriptjs":9}],5:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
@@ -125,7 +137,7 @@
         }
     ];
 })(angular);
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.14
@@ -4465,7 +4477,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -30775,11 +30787,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":6}],8:[function(require,module,exports){
+},{"./angular":7}],9:[function(require,module,exports){
 /*!
   * $script.js JS loader & dependency manager
   * https://github.com/ded/script.js
@@ -30900,4 +30912,4 @@ module.exports = angular;
   return $script
 });
 
-},{}]},{},[3]);
+},{}]},{},[4]);

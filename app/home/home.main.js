@@ -1,7 +1,7 @@
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
-(function (ng) {
+(function (ng, module) {
     'use strict';
     var exports = module.exports;
     exports.module = ng.module('browserifyApp.home', []);
@@ -15,4 +15,4 @@
             deps: ['build/home/home.controller.js']
         }
     ];
-})(angular);
+})(angular, module);
