@@ -2,6 +2,7 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (ng, require, module) {
+    var exports = module.exports;
     var externalModules = [
         'ui.router'
     ];
@@ -14,7 +15,6 @@
         require('./home/home.main.js'),
         require('./product/product.main.js')
     ];
-    var exports = module.exports;
     exports.dependModules = externalModules.concat(internalModules);
     exports.internalModuleObjects = internalModuleObjects;
 })(angular, require, module);

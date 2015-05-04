@@ -1,5 +1,52 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
+ * Created by Amit Thakkar on 01/05/15.
+ */
+(function (require) {
+    'use strict';
+    var ng = require('angular');
+    var $script = require('scriptjs');
+    var config = require('./config');
+
+    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
+    var states = [];
+    ng.forEach(config.internalModuleObjects, function (internalModuleObject) {
+        states = states.concat(internalModuleObject.states);
+        addDynamicBehaviourSupportToModule(internalModuleObject.module);
+    });
+
+    var browserifyApp = ng.module('browserifyApp', config.dependModules);
+    browserifyApp.controller('MainController', [function () {
+        var mainController = this;
+        mainController.title = 'Getting Started with Browserify';
+    }]);
+    browserifyApp.config(['$stateProvider', function ($stateProvider) {
+        var loadDependencies = function ($q, deps) {
+            var deferred = $q.defer();
+            $script(deps, function (error) {
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve('Success');
+                }
+            });
+            return deferred.promise;
+        };
+        ng.forEach(states, function (state) {
+            if (state.deps) {
+                if (!state.resolve) {
+                    state.resolve = {};
+                }
+                state.resolve.deps = ['$q', function ($q) {
+                    return loadDependencies($q, state.deps);
+                }];
+            }
+            $stateProvider.state(state.state, state)
+        });
+    }]);
+})(require);
+},{"./config":2,"./dynamicBehaviour":3,"angular":8,"scriptjs":9}],2:[function(require,module,exports){
+/**
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (ng, require, module) {
@@ -16,10 +63,10 @@
         require('./product/product.main.js')
     ];
     var exports = module.exports;
-    exports.modules = externalModules.concat(internalModules);
+    exports.dependModules = externalModules.concat(internalModules);
     exports.internalModuleObjects = internalModuleObjects;
 })(angular, require, module);
-},{"./home/home.main.js":3,"./product/product.main.js":5,"angular-ui-router":6}],2:[function(require,module,exports){
+},{"./home/home.main.js":4,"./product/product.main.js":5,"angular-ui-router":6}],3:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 04/05/15.
  */
@@ -53,7 +100,7 @@
         }]);
     };
 })(module);
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
@@ -72,54 +119,7 @@
         }
     ];
 })(angular, module);
-},{}],4:[function(require,module,exports){
-/**
- * Created by Amit Thakkar on 01/05/15.
- */
-(function (require) {
-    'use strict';
-    var ng = require('angular');
-    var $script = require('scriptjs');
-    var config = require('./config');
-
-    var addDynamicBehaviourSupportToModule = require("./dynamicBehaviour");
-    var states = [];
-    ng.forEach(config.internalModuleObjects, function (internalModuleObject) {
-        states = states.concat(internalModuleObject.states);
-        addDynamicBehaviourSupportToModule(internalModuleObject.module);
-    });
-
-    var browserifyApp = ng.module('browserifyApp', config.modules);
-    browserifyApp.controller('MainController', [function () {
-        var mainController = this;
-        mainController.title = 'Getting Started with Browserify';
-    }]);
-    browserifyApp.config(['$stateProvider', function ($stateProvider) {
-        var loadDependencies = function ($q, deps) {
-            var deferred = $q.defer();
-            $script(deps, function (error) {
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve('Success');
-                }
-            });
-            return deferred.promise;
-        };
-        ng.forEach(states, function (state) {
-            if (state.deps) {
-                if (!state.resolve) {
-                    state.resolve = {};
-                }
-                state.resolve.deps = ['$q', function ($q) {
-                    return loadDependencies($q, state.deps);
-                }];
-            }
-            $stateProvider.state(state.state, state)
-        });
-    }]);
-})(require);
-},{"./config":1,"./dynamicBehaviour":2,"angular":8,"scriptjs":9}],5:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
@@ -30913,4 +30913,4 @@ module.exports = angular;
   return $script
 });
 
-},{}]},{},[4]);
+},{}]},{},[1]);
