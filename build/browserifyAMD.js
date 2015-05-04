@@ -1,4 +1,59 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 02/05/15.
+ */
+(function (require, module) {
+    var exports = module.exports;
+    var externalModules = [
+        'ui.router'
+    ];
+    require('angular-ui-router');
+    var internalModules = [
+        'browserifyApp.home',
+        'browserifyApp.product'
+    ];
+    var internalModuleObjects = [
+        require('./home/home.main.js'),
+        require('./product/product.main.js')
+    ];
+    exports.dependModules = externalModules.concat(internalModules);
+    exports.internalModuleObjects = internalModuleObjects;
+})(require, module);
+},{"./home/home.main.js":4,"./product/product.main.js":5,"angular-ui-router":6}],2:[function(require,module,exports){
+/**
+ * Created by Amit Thakkar on 04/05/15.
+ */
+(function (module) {
+    module.exports = function (internalModule) {
+        internalModule.config(['$controllerProvider', '$provide', '$compileProvider', function ($controllerProvider, $provide, $compileProvider) {
+            internalModule.controller = function (name, constructor) {
+                $controllerProvider.register(name, constructor);
+                return (this);
+            };
+            internalModule.service = function (name, constructor) {
+                $provide.service(name, constructor);
+                return (this);
+            };
+            internalModule.factory = function (name, factory) {
+                $provide.factory(name, factory);
+                return (this);
+            };
+            internalModule.value = function (name, value) {
+                $provide.value(name, value);
+                return (this);
+            };
+            internalModule.constant = function (name, value) {
+                $provide.constant(name, value);
+                return (this);
+            };
+            internalModule.directive = function (name, factory) {
+                $compileProvider.directive(name, factory);
+                return (this);
+            };
+        }]);
+    };
+})(module);
+},{}],3:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
@@ -45,62 +100,7 @@
         });
     }]);
 })(require);
-},{"./config":2,"./dynamicBehaviour":3,"angular":8,"scriptjs":9}],2:[function(require,module,exports){
-/**
- * Created by Amit Thakkar on 02/05/15.
- */
-(function (ng, require, module) {
-    var externalModules = [
-        'ui.router'
-    ];
-    require('angular-ui-router');
-    var internalModules = [
-        'browserifyApp.home',
-        'browserifyApp.product'
-    ];
-    var internalModuleObjects = [
-        require('./home/home.main.js'),
-        require('./product/product.main.js')
-    ];
-    var exports = module.exports;
-    exports.dependModules = externalModules.concat(internalModules);
-    exports.internalModuleObjects = internalModuleObjects;
-})(angular, require, module);
-},{"./home/home.main.js":4,"./product/product.main.js":5,"angular-ui-router":6}],3:[function(require,module,exports){
-/**
- * Created by Amit Thakkar on 04/05/15.
- */
-(function (module) {
-    module.exports = function (module) {
-        module.config(['$controllerProvider', '$provide', '$compileProvider', function ($controllerProvider, $provide, $compileProvider) {
-            module.controller = function (name, constructor) {
-                $controllerProvider.register(name, constructor);
-                return (this);
-            };
-            module.service = function (name, constructor) {
-                $provide.service(name, constructor);
-                return (this);
-            };
-            module.factory = function (name, factory) {
-                $provide.factory(name, factory);
-                return (this);
-            };
-            module.value = function (name, value) {
-                $provide.value(name, value);
-                return (this);
-            };
-            module.constant = function (name, value) {
-                $provide.constant(name, value);
-                return (this);
-            };
-            module.directive = function (name, factory) {
-                $compileProvider.directive(name, factory);
-                return (this);
-            };
-        }]);
-    };
-})(module);
-},{}],4:[function(require,module,exports){
+},{"./config":1,"./dynamicBehaviour":2,"angular":8,"scriptjs":9}],4:[function(require,module,exports){
 /**
  * Created by Amit Thakkar on 02/05/15.
  */
@@ -30913,4 +30913,4 @@ module.exports = angular;
   return $script
 });
 
-},{}]},{},[1]);
+},{}]},{},[3])
