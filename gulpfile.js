@@ -15,33 +15,32 @@
 
     var isProduction = true,
         projectName = "AngularAMD with Browserify",
-        sound = "Frog";
-
+        sound = "Frog",
+        browserifyTasks = [
+            {
+                taskName: 'browserifyAMD',
+                srcFile: 'app/browserifyAMD.js',
+                dest: 'build'
+            },
+            {
+                taskName: 'browserifyHome',
+                srcFile: 'app/home/home.controller.js',
+                dest: 'build/home'
+            },
+            {
+                taskName: 'browserifyProduct',
+                srcFile: 'app/product/product.controller.js',
+                dest: 'build/product'
+            }
+        ];
     gulp.task('clear', function (callback) {
         rimraf('./build', callback);
     });
     gulp.task('setDevEnvironment', function () {
         isProduction = false;
     });
-    var browserifyTasks = [
-        {
-            taskName:'browserifyAMD',
-            srcFile: 'app/browserifyAMD.js',
-            dest: 'build'
-        },
-        {
-            taskName:'browserifyHome',
-            srcFile: 'app/home/home.controller.js',
-            dest: 'build/home'
-        },
-        {
-            taskName:'browserifyProduct',
-            srcFile: 'app/product/product.controller.js',
-            dest: 'build/product'
-        }
-    ];
     var taskNames = [];
-    browserifyTasks.forEach(function(browserifyTask) {
+    browserifyTasks.forEach(function (browserifyTask) {
         taskNames.push(browserifyTask.taskName);
         gulp.task(browserifyTask.taskName, function () {
             return gulp.src([browserifyTask.srcFile])
