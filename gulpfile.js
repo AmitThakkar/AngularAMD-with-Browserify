@@ -2,6 +2,7 @@
  * Created by Amit Thakkar on 04/05/15.
  */
 (function (require) {
+    'use strict';
     var gulp = require('gulp'),
         browserify = require('gulp-browserify'),
         uglify = require('gulp-uglify'),
@@ -22,44 +23,41 @@
     gulp.task('setDevEnvironment', function () {
         isProduction = false;
     });
-    gulp.task('browserifyAMD', function () {
-        return gulp.src(['app/browserifyAMD.js'])
-            .pipe(browserify())
-            .pipe(gulpif(isProduction, uglify()))
-            .pipe(gulp.dest('build'))
-            .pipe(gulpif(!isProduction, livereload()))
-            .pipe(gulpif(!isProduction, notify({
-                title: projectName,
-                message: 'browserifyAMD task executed',
-                sound: sound
-            })));
-    });
-    gulp.task('browserifyHome', function () {
-        return gulp.src(['app/home/home.controller.js'])
-            .pipe(browserify())
-            .pipe(gulpif(isProduction, uglify()))
-            .pipe(gulp.dest('build/home'))
-            .pipe(gulpif(!isProduction, livereload()))
-            .pipe(gulpif(!isProduction, notify({
-                title: projectName,
-                message: 'browserifyHome task executed',
-                sound: sound
-            })));
-    });
-    gulp.task('browserifyProduct', function () {
-        return gulp.src(['app/product/product.controller.js'])
-            .pipe(browserify())
-            .pipe(gulpif(isProduction, uglify()))
-            .pipe(gulp.dest('build/product'))
-            .pipe(gulpif(!isProduction, livereload()))
-            .pipe(gulpif(!isProduction, notify({
-                title: projectName,
-                message: 'browserifyProduct task executed',
-                sound: sound
-            })));
+    var browserifyTasks = [
+        {
+            taskName:'browserifyAMD',
+            srcFile: 'app/browserifyAMD.js',
+            dest: 'build'
+        },
+        {
+            taskName:'browserifyHome',
+            srcFile: 'app/home/home.controller.js',
+            dest: 'build/home'
+        },
+        {
+            taskName:'browserifyProduct',
+            srcFile: 'app/product/product.controller.js',
+            dest: 'build/product'
+        }
+    ];
+    var taskNames = [];
+    browserifyTasks.forEach(function(browserifyTask) {
+        taskNames.push(browserifyTask.taskName);
+        gulp.task(browserifyTask.taskName, function () {
+            return gulp.src([browserifyTask.srcFile])
+                .pipe(browserify())
+                .pipe(gulpif(isProduction, uglify()))
+                .pipe(gulp.dest(browserifyTask.dest))
+                .pipe(gulpif(!isProduction, livereload()))
+                .pipe(gulpif(!isProduction, notify({
+                    title: projectName,
+                    message: browserifyTask.taskName + ' task executed',
+                    sound: sound
+                })));
+        });
     });
     gulp.task('browserify', function (callback) {
-        runSequence('browserifyAMD', 'browserifyHome', 'browserifyProduct', callback);
+        runSequence(taskNames, callback);
     });
     gulp.task('open', function () {
         var options = {
