@@ -3,7 +3,7 @@
  */
 (function (ng, require) {
     'use strict';
-    var homeApp = ng.module('browserifyApp.home');
+    var homeApp = ng.module('angular-amd.home');
     require('./home.service');
     homeApp.controller('HomeController', ['HomeService', function (HomeService) {
         var homeController = this;

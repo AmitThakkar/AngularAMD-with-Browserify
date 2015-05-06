@@ -4,7 +4,7 @@
 (function (ng) {
     'use strict';
     var exports = module.exports;
-    exports.module = ng.module('browserifyApp.product', []);
+    exports.module = ng.module('angular-amd.product', []);
     exports.states = [
         {
             state: 'product',

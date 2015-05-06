@@ -4,7 +4,7 @@
 describe('Home Module Controller test cases', function () {
     var homeController,
         scope;
-    beforeEach(angular.mock.module("browserifyApp.home"));
+    beforeEach(angular.mock.module("angular-amd.home"));
     beforeEach(inject(function ($rootScope, $controller) {
         scope = $rootScope.$new();
         homeController = $controller('HomeController', {
@@ -17,7 +17,7 @@ describe('Home Module Controller test cases', function () {
 });
 describe('Home Module, Service test cases', function () {
     var homeService;
-    beforeEach(angular.mock.module("browserifyApp.home"));
+    beforeEach(angular.mock.module("angular-amd.home"));
     beforeEach(inject(function (_HomeService_) {
         homeService = _HomeService_;
     }));

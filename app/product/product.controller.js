@@ -3,7 +3,7 @@
  */
 (function (ng) {
     'use strict';
-    var productApp = ng.module("browserifyApp.product");
+    var productApp = ng.module("angular-amd.product");
     productApp.controller("ProductController", [function () {
         var productController = this;
         productController.page = "Product Page";

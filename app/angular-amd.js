@@ -14,8 +14,8 @@
         addDynamicBehaviourSupportToModule(internalModuleObject.module);
     });
 
-    var browserifyApp = ng.module('browserifyApp', config.dependModules);
-    browserifyApp.config(['$stateProvider', function ($stateProvider) {
+    var angularAMD = ng.module('angular-amd', config.dependModules);
+    angularAMD.config(['$stateProvider', function ($stateProvider) {
         var loadDependencies = function ($q, deps) {
             var deferred = $q.defer();
             $script(deps, function (error) {

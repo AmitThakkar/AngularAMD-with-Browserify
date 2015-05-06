@@ -8,8 +8,8 @@
     ];
     require('angular-ui-router');
     var internalModules = [
-        'browserifyApp.home',
-        'browserifyApp.product'
+        'angular-amd.home',
+        'angular-amd.product'
     ];
     var internalModuleObjects = [
         require('./home/home.main.js'),
