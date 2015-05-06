@@ -18,8 +18,8 @@
         sound = "Frog",
         browserifyTasks = [
             {
-                taskName: 'browserifyAMD',
-                srcFile: 'app/browserifyAMD.js',
+                taskName: 'angular-amd',
+                srcFile: 'app/angular-amd.js',
                 dest: 'build'
             },
             {
@@ -67,7 +67,7 @@
     });
     gulp.task('watch', function () {
         livereload.listen();
-        gulp.watch('app/*.js', ['browserifyAMD']);
+        gulp.watch('app/*.js', ['angular-amd']);
         gulp.watch('app/home/*.js', ['browserifyHome']);
         gulp.watch('app/product/*.js', ['browserifyProduct']);
     });
