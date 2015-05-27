@@ -5,8 +5,9 @@
     'use strict';
     var exports = module.exports;
     exports.moduleName = 'angular-amd.home';
-    exports.module = ng.module(exports.moduleName);
-    if(!exports.module) {
+    try {
+        exports.module = ng.module(exports.moduleName);
+    } catch(e) {
         exports.module = ng.module(exports.moduleName, []);
     }
     exports.states = [
