@@ -2,14 +2,15 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (require, module) {
+    var mainAppModule = "angular-amd";
     var exports = module.exports;
     var externalModules = [
         'ui.router'
     ];
     require('angular-ui-router');
     var internalModules = [
-        'angular-amd.home',
-        'angular-amd.product'
+        mainAppModule + '.home',
+        mainAppModule + '.product'
     ];
     var internalModuleObjects = [
         require('./home/home.main.js'),
@@ -17,5 +18,5 @@
     ];
     exports.dependModules = externalModules.concat(internalModules);
     exports.internalModuleObjects = internalModuleObjects;
-    exports.mainAppModule = 'angular-amd';
+    exports.mainAppModule = mainAppModule;
 })(require, module);
