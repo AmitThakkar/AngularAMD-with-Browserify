@@ -10,9 +10,8 @@
     } catch(e) {
         exports.module = ng.module(exports.moduleName, []);
     }
-    exports.states = [
+    exports.routes = [
         {
-            state: 'product',
             url: '/products',
             templateUrl: 'app/product/products.html',
             controller: 'ProductController',

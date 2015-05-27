@@ -5,9 +5,9 @@
     var MAIN_APP_MODULE = "angular-amd";
     var exports = module.exports;
     var externalModules = [
-        'ui.router'
+        'ngRoute'
     ];
-    require('angular-ui-router');
+    require('angular-route');
     var homeApp = require('./home/home.main.js');
     var productApp = require('./product/product.main.js');
     var internalModules = [

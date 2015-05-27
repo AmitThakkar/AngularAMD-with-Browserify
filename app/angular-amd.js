@@ -35,14 +35,14 @@
             };
         }]);
     };
-    var states = [];
+    var routes = [];
     ng.forEach(config.internalModuleObjects, function (internalModuleObject) {
-        states = states.concat(internalModuleObject.states);
+        routes = routes.concat(internalModuleObject.routes);
         addDynamicBehaviourSupportToModule(internalModuleObject.module);
     });
 
     var angularAMD = ng.module(config.mainAppModule, config.dependModules);
-    angularAMD.config(['$stateProvider', function ($stateProvider) {
+    angularAMD.config(['$routeProvider', function ($routeProvider) {
         var loadDependencies = function ($q, deps) {
             var deferred = $q.defer();
             $script(deps, function (error) {
@@ -54,16 +54,16 @@
             });
             return deferred.promise;
         };
-        ng.forEach(states, function (state) {
-            if (state.deps) {
-                if (!state.resolve) {
-                    state.resolve = {};
+        ng.forEach(routes, function (route) {
+            if (route.deps) {
+                if (!route.resolve) {
+                    route.resolve = {};
                 }
-                state.resolve.deps = ['$q', function ($q) {
-                    return loadDependencies($q, state.deps);
+                route.resolve.deps = ['$q', function ($q) {
+                    return loadDependencies($q, route.deps);
                 }];
             }
-            $stateProvider.state(state.state, state)
+            $routeProvider.when(route.url, route)
         });
     }]);
 })(require);
