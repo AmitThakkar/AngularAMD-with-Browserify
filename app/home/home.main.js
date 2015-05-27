@@ -3,19 +3,20 @@
  */
 (function (ng, module) {
     'use strict';
-    var exports = module.exports = function (moduleName) {
-        return {
-            module: ng.module(moduleName, []),
-            states: [
-                {
-                    state: 'home',
-                    url: '/home',
-                    templateUrl: 'app/home/home.html',
-                    controller: 'HomeController',
-                    controllerAs: 'homeController',
-                    deps: ['build/home/home.controller.js']
-                }
-            ]
-        };
-    };
+    var exports = module.exports;
+    exports.moduleName = 'angular-amd.home';
+    exports.module = ng.module(exports.moduleName);
+    if(!exports.module) {
+        exports.module = ng.module(exports.moduleName, []);
+    }
+    exports.states = [
+        {
+            state: 'home',
+            url: '/home',
+            templateUrl: 'app/home/home.html',
+            controller: 'HomeController',
+            controllerAs: 'homeController',
+            deps: ['build/home/home.controller.js']
+        }
+    ];
 })(angular, module);
