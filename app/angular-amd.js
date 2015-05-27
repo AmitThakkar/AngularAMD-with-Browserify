@@ -41,7 +41,7 @@
         addDynamicBehaviourSupportToModule(internalModuleObject.module);
     });
 
-    var angularAMD = ng.module('angular-amd', config.dependModules);
+    var angularAMD = ng.module(config.mainAppModule, config.dependModules);
     angularAMD.config(['$stateProvider', function ($stateProvider) {
         var loadDependencies = function ($q, deps) {
             var deferred = $q.defer();

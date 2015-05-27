@@ -17,4 +17,5 @@
     ];
     exports.dependModules = externalModules.concat(internalModules);
     exports.internalModuleObjects = internalModuleObjects;
+    exports.mainAppModule = 'angular-amd';
 })(require, module);
