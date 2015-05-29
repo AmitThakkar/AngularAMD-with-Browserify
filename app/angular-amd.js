@@ -7,6 +7,8 @@
     require('./angular-libs');
     var config = require('./config');
     var ng = window.angular;
+    var $script = window.$script;
+
     var addDynamicBehaviourSupportToModule = function (internalModule) {
         internalModule.config(['$controllerProvider', '$provide', '$compileProvider', function ($controllerProvider, $provide, $compileProvider) {
             internalModule.controller = function (name, constructor) {

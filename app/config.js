@@ -17,7 +17,7 @@
         homeApp,
         productApp
     ];
+    exports.mainAppModule = MAIN_APP_MODULE;
     exports.dependModules = externalModules.concat(internalModules);
     exports.internalModuleObjects = internalModuleObjects;
-    exports.mainAppModule = MAIN_APP_MODULE;
 })(require, module);
