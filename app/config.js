@@ -7,7 +7,6 @@
     var externalModules = [
         'ngRoute'
     ];
-    require('angular-route');
     var homeApp = require('./home/home.main.js');
     var productApp = require('./product/product.main.js');
     var internalModules = [

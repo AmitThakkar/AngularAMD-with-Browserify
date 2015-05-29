@@ -1,12 +1,12 @@
 /**
  * Created by Amit Thakkar on 01/05/15.
  */
-(function (require) {
+(function (require, window) {
     'use strict';
-    var ng = require('angular');
-    var $script = require('scriptjs');
+    require('./jQuery-libs');
+    require('./angular-libs');
     var config = require('./config');
-
+    var ng = window.angular;
     var addDynamicBehaviourSupportToModule = function (internalModule) {
         internalModule.config(['$controllerProvider', '$provide', '$compileProvider', function ($controllerProvider, $provide, $compileProvider) {
             internalModule.controller = function (name, constructor) {
@@ -66,4 +66,4 @@
             $routeProvider.when(route.url, route)
         });
     }]);
-})(require);
+})(require, window);
