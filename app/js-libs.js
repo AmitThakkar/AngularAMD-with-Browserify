@@ -3,5 +3,6 @@
  */
 (function (require, window) {
     window.$ = window.jQuery = require('jquery');
+    window._ = require('lodash');
     window.$script = require('scriptjs');
 })(require, window);

@@ -3,7 +3,7 @@
  */
 (function (require, window) {
     'use strict';
-    require('./jQuery-libs');
+    require('./js-libs');
     require('./angular-libs');
     var config = require('./config');
     var ng = window.angular;
