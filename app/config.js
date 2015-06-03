@@ -9,7 +9,7 @@
     ];
     var homeApp = require('./home/home.main.js');
     var productApp = require('./product/product.main.js');
-    var commonApp = require('./product/common.main.js');
+    var commonApp = require('./common/common.main.js');
     var internalModules = [
         homeApp.moduleName,
         productApp.moduleName,
@@ -17,10 +17,10 @@
     ];
     var internalModuleObjects = [
         homeApp,
-        productApp,
-        commonApp
+        productApp
     ];
     exports.mainAppModule = MAIN_APP_MODULE;
     exports.dependModules = externalModules.concat(internalModules);
     exports.internalModuleObjects = internalModuleObjects;
+    exports.DEFAULT_URL = "/home";
 })(require, module);

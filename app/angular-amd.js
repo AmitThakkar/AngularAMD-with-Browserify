@@ -67,5 +67,8 @@
             }
             $routeProvider.when(route.url, route)
         });
+        $routeProvider.otherwise({
+            redirectTo: config.DEFAULT_URL
+        });
     }]);
 })(require, window);
