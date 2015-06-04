@@ -68,6 +68,7 @@
     gulp.task('watch', function () {
         livereload.listen();
         gulp.watch('app/*.js', ['angular-amd']);
+        gulp.watch('app/**/*.main.js', ['angular-amd']);
         gulp.watch('app/home/*.js', ['browserifyHome']);
         gulp.watch('app/product/*.js', ['browserifyProduct']);
     });
