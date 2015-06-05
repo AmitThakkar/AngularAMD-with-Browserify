@@ -2,6 +2,8 @@
  * Created by Amit Thakkar on 02/05/15.
  */
 (function (require, module) {
+    require('./shared/js-libs');
+    require('./shared/angular-libs');
     var MAIN_APP_MODULE = "angular-amd";
     var exports = module.exports;
     var externalModules = [
