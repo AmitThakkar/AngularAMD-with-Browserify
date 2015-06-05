@@ -24,13 +24,13 @@
             },
             {
                 taskName: 'browserifyHome',
-                srcFile: 'app/home/home.controller.js',
-                dest: 'build/home'
+                srcFile: 'app/components/home/home.controller.js',
+                dest: 'build/components/home'
             },
             {
                 taskName: 'browserifyProduct',
-                srcFile: 'app/product/product.controller.js',
-                dest: 'build/product'
+                srcFile: 'app/components/product/product.controller.js',
+                dest: 'build/components/product'
             }
         ];
     gulp.task('clear', function (callback) {
@@ -68,9 +68,10 @@
     gulp.task('watch', function () {
         livereload.listen();
         gulp.watch('app/*.js', ['angular-amd']);
-        gulp.watch('app/**/*.main.js', ['angular-amd']);
-        gulp.watch('app/home/*.js', ['browserifyHome']);
-        gulp.watch('app/product/*.js', ['browserifyProduct']);
+        gulp.watch('app/shared/*.js', ['angular-amd']);
+        gulp.watch('app/components/**/*.main.js', ['angular-amd']);
+        gulp.watch('app/components/home/*.js', ['browserifyHome']);
+        gulp.watch('app/components/product/*.js', ['browserifyProduct']);
     });
     gulp.task('dev', function (callback) {
         runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', callback);

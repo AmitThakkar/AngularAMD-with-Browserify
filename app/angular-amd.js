@@ -3,8 +3,8 @@
  */
 (function (require, window) {
     'use strict';
-    require('./common/js-libs');
-    require('./common/angular-libs');
+    require('./shared/js-libs');
+    require('./shared/angular-libs');
     var config = require('./config');
     var ng = window.angular;
     var $script = window.$script;

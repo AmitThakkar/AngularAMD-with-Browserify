@@ -3,7 +3,7 @@
  */
 (function (ng) {
     'use strict';
-    var homeApp = ng.module(require('./home.main').moduleName);
+    var homeApp = ng.module(require('./home.main.js').moduleName);
     homeApp.service("HomeService", [function () {
         this.getName = function() {
             return "Home Service";

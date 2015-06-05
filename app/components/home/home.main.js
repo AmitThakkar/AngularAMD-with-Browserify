@@ -13,10 +13,10 @@
     exports.routes = [
         {
             url: '/home',
-            templateUrl: 'app/home/home.html',
+            templateUrl: 'app/components/home/home.html',
             controller: 'HomeController',
             controllerAs: 'homeController',
-            deps: ['build/home/home.controller.js']
+            deps: ['build/components/home/home.controller.js']
         }
     ];
 })(angular, module);

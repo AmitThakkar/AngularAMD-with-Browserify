@@ -9,12 +9,12 @@
     ];
     // If your module have route configuration then push module main file to moduleMainFiles.
     var moduleMainFiles = [
-        require('./home/home.main.js'),
-        require('./product/product.main.js')
+        require('./components/home/home.main.js'),
+        require('./components/product/product.main.js')
     ];
     // If your module have not route configuration then don't neet push module to internalModuleObjects.
     var withoutRouteMainFiles = [
-        require('./common/common.main.js')
+        require('./shared/common.main.js')
     ];
 
     var internalModules = [];

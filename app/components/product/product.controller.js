@@ -3,7 +3,7 @@
  */
 (function (ng) {
     'use strict';
-    var productApp = ng.module(require('./product.main').moduleName);
+    var productApp = ng.module(require('./product.main.js').moduleName);
     productApp.controller("ProductController", [function () {
         var productController = this;
         productController.page = "Product Page";
