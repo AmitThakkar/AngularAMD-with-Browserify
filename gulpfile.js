@@ -11,6 +11,7 @@
         runSequence = require('run-sequence'),
         livereload = require('gulp-livereload'),
         notify = require("gulp-notify"),
+        inject = require('gulp-inject'),
         rimraf = require('rimraf');
 
     var isProduction = true,
@@ -39,6 +40,11 @@
     gulp.task('setDevEnvironment', function () {
         isProduction = false;
     });
+    gulp.task('index.html', function () {
+        return gulp.src('./app/index.html')
+            .pipe(inject(gulp.src('./build/angular-amd*.js', {read: false}), {relative: true}))
+            .pipe(gulp.dest('./build/'));
+    });
     var taskNames = [];
     browserifyTasks.forEach(function (browserifyTask) {
         taskNames.push(browserifyTask.taskName);
@@ -56,13 +62,13 @@
         });
     });
     gulp.task('browserify', function (callback) {
-        runSequence(taskNames, callback);
+        runSequence(taskNames, 'index.html', callback);
     });
     gulp.task('open', function () {
         var options = {
-            url: 'http://localhost:63342/AngularAMD-with-Browserify/'
+            url: 'http://localhost:63342/AngularAMD-with-Browserify/build/'
         };
-        gulp.src('./index.html')
+        gulp.src('./build/index.html')
             .pipe(open("", options));
     });
     gulp.task('watch', function () {
