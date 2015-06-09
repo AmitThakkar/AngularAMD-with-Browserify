@@ -11,6 +11,7 @@
         runSequence = require('run-sequence'),
         livereload = require('gulp-livereload'),
         notify = require("gulp-notify"),
+        minifyHTML = require('gulp-minify-html'),
         inject = require('gulp-inject'),
         rimraf = require('rimraf');
 
@@ -43,6 +44,7 @@
     gulp.task('index.html', function () {
         return gulp.src('./app/index.html')
             .pipe(inject(gulp.src('./build/angular-amd*.js', {read: false}), {relative: true}))
+            .pipe(gulpif(isProduction, minifyHTML()))
             .pipe(gulp.dest('./build/'));
     });
     var taskNames = [];
