@@ -18,7 +18,7 @@
     var isProduction = true,
         projectName = "AngularAMD with Browserify",
         sound = "Frog",
-        browserifyTasks = [
+        javascriptTasks = [
             {
                 taskName: 'angular-amd',
                 srcFile: 'app/angular-amd.js',
@@ -34,21 +34,33 @@
                 srcFile: 'app/components/product/product.controller.js',
                 dest: 'build/components/product'
             }
+        ],
+        htmlTasks = [
+            {
+                taskName: 'home.html',
+                srcFile: './app/components/home/_home.html',
+                dest: 'build/components/home/'
+            },
+            {
+                taskName: 'product.html',
+                srcFile: './app/components/product/_product.html',
+                dest: 'build/components/product/'
+            }
         ];
-    gulp.task('clear', function (callback) {
-        rimraf('./build', callback);
-    });
-    gulp.task('setDevEnvironment', function () {
-        isProduction = false;
-    });
     gulp.task('index.html', function () {
         return gulp.src('./app/index.html')
             .pipe(inject(gulp.src('./build/angular-amd*.js', {read: false}), {relative: true}))
             .pipe(gulpif(isProduction, minifyHTML()))
             .pipe(gulp.dest('./build/'));
     });
+    gulp.task('clear', function (callback) {
+        rimraf('./build', callback);
+    });
+    gulp.task('setDevEnvironment', function () {
+        isProduction = false;
+    });
     var taskNames = [];
-    browserifyTasks.forEach(function (browserifyTask) {
+    javascriptTasks.forEach(function (browserifyTask) {
         taskNames.push(browserifyTask.taskName);
         gulp.task(browserifyTask.taskName, function () {
             return gulp.src([browserifyTask.srcFile])
@@ -62,6 +74,15 @@
                     sound: sound
                 })));
         });
+    });
+    htmlTasks.forEach(function (htmlTask) {
+        taskNames.push(htmlTask.taskName);
+        gulp.task(htmlTask.taskName, function () {
+            return gulp.src(htmlTask.srcFile)
+                .pipe(gulpif(isProduction, minifyHTML()))
+                .pipe(gulpif(!isProduction, livereload()))
+                .pipe(gulp.dest(htmlTask.dest));
+        })
     });
     gulp.task('browserify', function (callback) {
         runSequence(taskNames, 'index.html', callback);
@@ -78,6 +99,8 @@
         gulp.watch('app/*.js', ['angular-amd']);
         gulp.watch('app/shared/*.js', ['angular-amd']);
         gulp.watch('app/components/**/*.main.js', ['angular-amd']);
+        gulp.watch('app/components/home/*.html', ['home.html']);
+        gulp.watch('app/components/product/*.html', ['product.html']);
         gulp.watch('app/components/home/*.js', ['browserifyHome']);
         gulp.watch('app/components/product/*.js', ['browserifyProduct']);
     });

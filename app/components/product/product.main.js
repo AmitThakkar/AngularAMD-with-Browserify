@@ -13,7 +13,7 @@
     exports.routes = [
         {
             url: '/products',
-            templateUrl: '../app/components/product/_products.html',
+            templateUrl: 'components/product/_product.html',
             controller: 'ProductController',
             controllerAs: 'productController',
             deps: ['components/product/product.controller.js']
