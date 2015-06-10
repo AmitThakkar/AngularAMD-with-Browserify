@@ -25,12 +25,12 @@
                 dest: 'build'
             },
             {
-                taskName: 'browserifyHome',
+                taskName: 'home.javascript',
                 srcFile: 'app/components/home/home.controller.js',
                 dest: 'build/components/home'
             },
             {
-                taskName: 'browserifyProduct',
+                taskName: 'product.javascript',
                 srcFile: 'app/components/product/product.controller.js',
                 dest: 'build/components/product'
             }
@@ -101,8 +101,8 @@
         gulp.watch('app/components/**/*.main.js', ['angular-amd']);
         gulp.watch('app/components/home/*.html', ['home.html']);
         gulp.watch('app/components/product/*.html', ['product.html']);
-        gulp.watch('app/components/home/*.js', ['browserifyHome']);
-        gulp.watch('app/components/product/*.js', ['browserifyProduct']);
+        gulp.watch('app/components/home/*.js', ['home.javascript']);
+        gulp.watch('app/components/product/*.js', ['product.javascript']);
     });
     gulp.task('dev', function (callback) {
         runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', callback);
