@@ -13,10 +13,10 @@
     exports.routes = [
         {
             url: '/products',
-            templateUrl: 'components/product/_product.html',
+            templateUrl: 'components/product/_product{{now}}.html',
             controller: 'ProductController',
             controllerAs: 'productController',
-            deps: ['components/product/product.controller.js']
+            deps: ['components/product/product.controller{{now}}.js']
         }
     ];
 })(angular);

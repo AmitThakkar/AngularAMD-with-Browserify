@@ -13,6 +13,8 @@
         notify = require("gulp-notify"),
         minifyHTML = require('gulp-minify-html'),
         inject = require('gulp-inject'),
+        rename = require("gulp-rename"),
+        replace = require('gulp-replace'),
         rimraf = require('rimraf');
 
     var isProduction = true,
@@ -46,7 +48,11 @@
                 srcFile: './app/components/product/_product.html',
                 dest: 'build/components/product/'
             }
-        ];
+        ],
+        now = "-" + Date.now(),
+        renameFunction = function (path) {
+            path.basename += now;
+        };
     gulp.task('index.html', function () {
         return gulp.src('./app/index.html')
             .pipe(inject(gulp.src('./build/angular-amd*.js', {read: false}), {relative: true}))
@@ -65,7 +71,9 @@
         gulp.task(browserifyTask.taskName, function () {
             return gulp.src([browserifyTask.srcFile])
                 .pipe(browserify())
+                .pipe(replace('{{now}}', now))
                 .pipe(gulpif(isProduction, uglify()))
+                .pipe(rename(renameFunction))
                 .pipe(gulp.dest(browserifyTask.dest))
                 .pipe(gulpif(!isProduction, livereload()))
                 .pipe(gulpif(!isProduction, notify({
@@ -81,6 +89,7 @@
             return gulp.src(htmlTask.srcFile)
                 .pipe(gulpif(isProduction, minifyHTML()))
                 .pipe(gulpif(!isProduction, livereload()))
+                .pipe(rename(renameFunction))
                 .pipe(gulp.dest(htmlTask.dest));
         })
     });
