@@ -88,9 +88,9 @@
         gulp.task(htmlTask.taskName, function () {
             return gulp.src(htmlTask.srcFile)
                 .pipe(gulpif(isProduction, minifyHTML()))
-                .pipe(gulpif(!isProduction, livereload()))
                 .pipe(rename(renameFunction))
-                .pipe(gulp.dest(htmlTask.dest));
+                .pipe(gulp.dest(htmlTask.dest))
+                .pipe(gulpif(!isProduction, livereload()));
         })
     });
     gulp.task('browserify', function (callback) {
