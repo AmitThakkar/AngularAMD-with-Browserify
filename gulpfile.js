@@ -7,55 +7,57 @@
         browserify = require('gulp-browserify'),
         uglify = require('gulp-uglify'),
         gulpif = require('gulp-if'),
-        open = require("gulp-open"),
+        open = require('gulp-open'),
         runSequence = require('run-sequence'),
         livereload = require('gulp-livereload'),
-        notify = require("gulp-notify"),
+        notify = require('gulp-notify'),
         minifyHTML = require('gulp-minify-html'),
         inject = require('gulp-inject'),
-        rename = require("gulp-rename"),
+        rename = require('gulp-rename'),
         replace = require('gulp-replace'),
         rimraf = require('rimraf');
 
     var isProduction = true,
-        projectName = "AngularAMD with Browserify",
-        sound = "Frog",
+        projectName = 'AngularAMD with Browserify',
+        sound = 'Frog',
+        srcFolder = 'app/src/',
+        destFolder = 'build/src/',
         javascriptTasks = [
             {
                 taskName: 'angular-amd',
-                srcFile: 'app/angular-amd.js',
-                dest: 'build'
+                srcFile: srcFolder + 'angular-amd.js',
+                dest: destFolder
             },
             {
                 taskName: 'home.javascript',
-                srcFile: 'app/components/home/home.controller.js',
-                dest: 'build/components/home'
+                srcFile: srcFolder + 'components/home/home.controller.js',
+                dest: destFolder + 'components/home'
             },
             {
                 taskName: 'product.javascript',
-                srcFile: 'app/components/product/product.controller.js',
-                dest: 'build/components/product'
+                srcFile: srcFolder + 'components/product/product.controller.js',
+                dest: destFolder + 'components/product'
             }
         ],
         htmlTasks = [
             {
                 taskName: 'home.html',
-                srcFile: './app/components/home/_home.html',
-                dest: 'build/components/home/'
+                srcFile: srcFolder + 'components/home/_home.html',
+                dest: destFolder + 'components/home/'
             },
             {
                 taskName: 'product.html',
-                srcFile: './app/components/product/_product.html',
-                dest: 'build/components/product/'
+                srcFile: srcFolder + 'components/product/_product.html',
+                dest: destFolder + 'components/product/'
             }
         ],
-        now = "-" + Date.now(),
+        now = '-' + Date.now(),
         renameFunction = function (path) {
             path.basename += now;
         };
     gulp.task('index.html', function () {
         return gulp.src('./app/index.html')
-            .pipe(inject(gulp.src('./build/angular-amd*.js', {read: false}), {relative: true}))
+            .pipe(inject(gulp.src(destFolder + 'angular-amd*.js', {read: false}), {relative: true}))
             .pipe(gulpif(isProduction, minifyHTML()))
             .pipe(gulp.dest('./build/'));
     });
@@ -101,17 +103,17 @@
             url: 'http://localhost:63342/AngularAMD-with-Browserify/build/'
         };
         gulp.src('./build/index.html')
-            .pipe(open("", options));
+            .pipe(open('', options));
     });
     gulp.task('watch', function () {
         livereload.listen();
-        gulp.watch('app/*.js', ['angular-amd']);
-        gulp.watch('app/shared/*.js', ['angular-amd']);
-        gulp.watch('app/components/**/*.main.js', ['angular-amd']);
-        gulp.watch('app/components/home/*.html', ['home.html']);
-        gulp.watch('app/components/product/*.html', ['product.html']);
-        gulp.watch('app/components/home/*.js', ['home.javascript']);
-        gulp.watch('app/components/product/*.js', ['product.javascript']);
+        gulp.watch(srcFolder + '*.js', ['angular-amd']);
+        gulp.watch(srcFolder + 'shared/*.js', ['angular-amd']);
+        gulp.watch(srcFolder + 'components/**/*.main.js', ['angular-amd']);
+        gulp.watch(srcFolder + 'components/home/*.html', ['home.html']);
+        gulp.watch(srcFolder + 'components/product/*.html', ['product.html']);
+        gulp.watch(srcFolder + 'components/home/*.js', ['home.javascript']);
+        gulp.watch(srcFolder + 'components/product/*.js', ['product.javascript']);
     });
     gulp.task('dev', function (callback) {
         runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', callback);
