@@ -61,6 +61,10 @@
             .pipe(gulpif(isProduction, minifyHTML()))
             .pipe(gulp.dest('./build/'));
     });
+    gulp.task('assets', function () {
+        return gulp.src('app/assets/**/*')
+            .pipe(gulp.dest('build/assets'));
+    });
     gulp.task('clear', function (callback) {
         rimraf('./build', callback);
     });
@@ -96,7 +100,7 @@
         })
     });
     gulp.task('browserify', function (callback) {
-        runSequence(taskNames, 'index.html', callback);
+        runSequence(taskNames, 'index.html', 'assets', callback);
     });
     gulp.task('open', function () {
         var options = {
