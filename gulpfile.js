@@ -18,7 +18,7 @@
         rimraf = require('rimraf'),
         gulpNgConfig = require('gulp-ng-config');
 
-    var isProduction = true,
+    var isDevelopmentEnvironment = false,
         projectName = 'AngularAMD with Browserify',
         sound = 'Frog',
         srcFolder = 'app/src/',
@@ -70,7 +70,7 @@
     gulp.task('index.html', function () {
         return gulp.src('./app/index.html')
             .pipe(inject(gulp.src(destFolder + 'angular-amd*.js', {read: false}), {relative: true}))
-            .pipe(gulpif(isProduction, minifyHTML()))
+            .pipe(gulpif(!isDevelopmentEnvironment, minifyHTML()))
             .pipe(gulp.dest('./build/'));
     });
     gulp.task('assets', function () {
@@ -84,7 +84,7 @@
         rimraf(temp, callback);
     });
     gulp.task('setDevEnvironment', function () {
-        isProduction = false;
+        isDevelopmentEnvironment = true;
     });
     var taskNames = [];
     javascriptTasks.forEach(function (javascriptTask) {
@@ -94,10 +94,10 @@
                 .pipe(concat(getDestFileName(javascriptTask.srcFiles[0])))
                 .pipe(browserify())
                 .pipe(replace('{{now}}', now))
-                .pipe(gulpif(isProduction, uglify()))
+                .pipe(gulpif(!isDevelopmentEnvironment, uglify()))
                 .pipe(gulp.dest(javascriptTask.dest))
-                .pipe(gulpif(!isProduction, livereload()))
-                .pipe(gulpif(!isProduction, notify({
+                .pipe(gulpif(isDevelopmentEnvironment, livereload()))
+                .pipe(gulpif(isDevelopmentEnvironment, notify({
                     title: projectName,
                     message: javascriptTask.taskName + ' task executed',
                     sound: sound
@@ -109,9 +109,9 @@
         gulp.task(htmlTask.taskName, function () {
             return gulp.src(htmlTask.srcFiles)
                 .pipe(concat(getDestFileName(htmlTask.srcFiles[0])))
-                .pipe(gulpif(isProduction, minifyHTML()))
+                .pipe(gulpif(!isDevelopmentEnvironment, minifyHTML()))
                 .pipe(gulp.dest(htmlTask.dest))
-                .pipe(gulpif(!isProduction, livereload()));
+                .pipe(gulpif(isDevelopmentEnvironment, livereload()));
         })
     });
     gulp.task('browserify', function (callback) {
