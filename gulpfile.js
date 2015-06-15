@@ -54,6 +54,7 @@
             }
         ],
         now = '-' + Date.now(),
+        environment = 'production',
         getDestFileName = function (srcFile) {
             var fileParts = srcFile.match(/.*\/(.*)(\..*)/);
             return fileParts[1] + now + fileParts[2];
@@ -63,7 +64,7 @@
             .pipe(gulpNgConfig('angular-amd', {
                 createModule: false,
                 wrap: '(function(angular) {<%= module %>})(angular);',
-                environment: 'production'
+                environment: environment
             }))
             .pipe(gulp.dest(temp));
     });
@@ -135,7 +136,12 @@
         gulp.watch(srcFolder + 'components/product/*.js', ['product.javascript']);
     });
     gulp.task('dev', function (callback) {
+        environment = 'development';
         runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', 'clear.temp', callback);
+    });
+    gulp.task('qa', function (callback) {
+        environment = 'qa';
+        runSequence('clear', 'browserify', 'clear.temp', callback);
     });
     gulp.task('default', function (callback) {
         runSequence('clear', 'browserify', 'clear.temp', callback);

@@ -1,7 +1,12 @@
 {
-    "local": {
+    "development": {
         "EnvironmentConfig": {
             "api": "http://localhost:3000/"
+        }
+    },
+    "qa": {
+        "EnvironmentConfig": {
+            "api": "https://api.codechutney.com/"
         }
     },
     "production": {
