@@ -16,7 +16,7 @@
     ];
     // If your module have not route configuration then don't neet push module to internalModuleObjects.
     var withoutRouteMainFiles = [
-        require('./shared/common.main.js')
+        require('./shared/common.main')
     ];
 
     var internalModules = [];

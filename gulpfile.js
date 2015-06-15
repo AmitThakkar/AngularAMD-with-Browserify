@@ -13,48 +13,60 @@
         notify = require('gulp-notify'),
         minifyHTML = require('gulp-minify-html'),
         inject = require('gulp-inject'),
-        rename = require('gulp-rename'),
         replace = require('gulp-replace'),
-        rimraf = require('rimraf');
+        concat = require('gulp-concat'),
+        rimraf = require('rimraf'),
+        gulpNgConfig = require('gulp-ng-config');
 
     var isProduction = true,
         projectName = 'AngularAMD with Browserify',
         sound = 'Frog',
         srcFolder = 'app/src/',
         destFolder = 'build/src/',
+        temp = 'temp/',
         javascriptTasks = [
             {
                 taskName: 'angular-amd',
-                srcFile: srcFolder + 'angular-amd.js',
+                srcFiles: [srcFolder + 'angular-amd.js', temp + 'environment.config*.js'],
                 dest: destFolder
             },
             {
                 taskName: 'home.javascript',
-                srcFile: srcFolder + 'components/home/home.controller.js',
+                srcFiles: [srcFolder + 'components/home/home.controller.js'],
                 dest: destFolder + 'components/home'
             },
             {
                 taskName: 'product.javascript',
-                srcFile: srcFolder + 'components/product/product.controller.js',
+                srcFiles: [srcFolder + 'components/product/product.controller.js'],
                 dest: destFolder + 'components/product'
             }
         ],
         htmlTasks = [
             {
                 taskName: 'home.html',
-                srcFile: srcFolder + 'components/home/_home.html',
+                srcFiles: [srcFolder + 'components/home/_home.html'],
                 dest: destFolder + 'components/home/'
             },
             {
                 taskName: 'product.html',
-                srcFile: srcFolder + 'components/product/_product.html',
+                srcFiles: [srcFolder + 'components/product/_product.html'],
                 dest: destFolder + 'components/product/'
             }
         ],
         now = '-' + Date.now(),
-        renameFunction = function (path) {
-            path.basename += now;
+        getDestFileName = function (srcFile) {
+            var fileParts = srcFile.match(/.*\/(.*)(\..*)/);
+            return fileParts[1] + now + fileParts[2];
         };
+    gulp.task('config.json', function () {
+        return gulp.src(srcFolder + 'environment.config.json')
+            .pipe(gulpNgConfig('angular-amd', {
+                createModule: false,
+                wrap: '(function(angular) {<%= module %>})(angular);',
+                environment: 'production'
+            }))
+            .pipe(gulp.dest(temp));
+    });
     gulp.task('index.html', function () {
         return gulp.src('./app/index.html')
             .pipe(inject(gulp.src(destFolder + 'angular-amd*.js', {read: false}), {relative: true}))
@@ -68,23 +80,26 @@
     gulp.task('clear', function (callback) {
         rimraf('./build', callback);
     });
+    gulp.task('clear.temp', function (callback) {
+        rimraf(temp, callback);
+    });
     gulp.task('setDevEnvironment', function () {
         isProduction = false;
     });
     var taskNames = [];
-    javascriptTasks.forEach(function (browserifyTask) {
-        taskNames.push(browserifyTask.taskName);
-        gulp.task(browserifyTask.taskName, function () {
-            return gulp.src([browserifyTask.srcFile])
+    javascriptTasks.forEach(function (javascriptTask) {
+        taskNames.push(javascriptTask.taskName);
+        gulp.task(javascriptTask.taskName, function () {
+            return gulp.src(javascriptTask.srcFiles)
+                .pipe(concat(getDestFileName(javascriptTask.srcFiles[0])))
                 .pipe(browserify())
                 .pipe(replace('{{now}}', now))
                 .pipe(gulpif(isProduction, uglify()))
-                .pipe(rename(renameFunction))
-                .pipe(gulp.dest(browserifyTask.dest))
+                .pipe(gulp.dest(javascriptTask.dest))
                 .pipe(gulpif(!isProduction, livereload()))
                 .pipe(gulpif(!isProduction, notify({
                     title: projectName,
-                    message: browserifyTask.taskName + ' task executed',
+                    message: javascriptTask.taskName + ' task executed',
                     sound: sound
                 })));
         });
@@ -92,15 +107,15 @@
     htmlTasks.forEach(function (htmlTask) {
         taskNames.push(htmlTask.taskName);
         gulp.task(htmlTask.taskName, function () {
-            return gulp.src(htmlTask.srcFile)
+            return gulp.src(htmlTask.srcFiles)
+                .pipe(concat(getDestFileName(htmlTask.srcFiles[0])))
                 .pipe(gulpif(isProduction, minifyHTML()))
-                .pipe(rename(renameFunction))
                 .pipe(gulp.dest(htmlTask.dest))
                 .pipe(gulpif(!isProduction, livereload()));
         })
     });
     gulp.task('browserify', function (callback) {
-        runSequence(taskNames, 'index.html', 'assets', callback);
+        runSequence('config.json', taskNames, 'index.html', 'assets', callback);
     });
     gulp.task('open', function () {
         var options = {
@@ -120,9 +135,9 @@
         gulp.watch(srcFolder + 'components/product/*.js', ['product.javascript']);
     });
     gulp.task('dev', function (callback) {
-        runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', callback);
+        runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', 'clear.temp', callback);
     });
     gulp.task('default', function (callback) {
-        runSequence('clear', 'browserify', callback);
+        runSequence('clear', 'browserify', 'clear.temp', callback);
     });
 })(require);
