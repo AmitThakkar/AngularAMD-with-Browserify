@@ -13,8 +13,8 @@
         notify = require('gulp-notify'),
         minifyHTML = require('gulp-minify-html'),
         inject = require('gulp-inject'),
+        rename = require('gulp-rename'),
         replace = require('gulp-replace'),
-        concat = require('gulp-concat'),
         rimraf = require('rimraf'),
         gulpNgConfig = require('gulp-ng-config');
 
@@ -27,7 +27,7 @@
         javascriptTasks = [
             {
                 taskName: 'angular-amd',
-                srcFiles: [srcFolder + 'angular-amd.js', temp + 'environment.config*.js'],
+                srcFiles: [srcFolder + 'angular-amd.js'],
                 dest: destFolder
             },
             {
@@ -55,9 +55,8 @@
         ],
         now = '-' + Date.now(),
         environment = 'production',
-        getDestFileName = function (srcFile) {
-            var fileParts = srcFile.match(/.*\/(.*)(\..*)/);
-            return fileParts[1] + now + fileParts[2];
+        renameFunction = function (path) {
+            path.basename += now;
         };
     gulp.task('config.json', function () {
         return gulp.src(srcFolder + 'environment.config.json')
@@ -92,10 +91,10 @@
         taskNames.push(javascriptTask.taskName);
         gulp.task(javascriptTask.taskName, function () {
             return gulp.src(javascriptTask.srcFiles)
-                .pipe(concat(getDestFileName(javascriptTask.srcFiles[0])))
                 .pipe(browserify())
                 .pipe(replace('{{now}}', now))
                 .pipe(gulpif(!isDevelopmentEnvironment, uglify()))
+                .pipe(rename(renameFunction))
                 .pipe(gulp.dest(javascriptTask.dest))
                 .pipe(gulpif(isDevelopmentEnvironment, livereload()))
                 .pipe(gulpif(isDevelopmentEnvironment, notify({
@@ -109,8 +108,8 @@
         taskNames.push(htmlTask.taskName);
         gulp.task(htmlTask.taskName, function () {
             return gulp.src(htmlTask.srcFiles)
-                .pipe(concat(getDestFileName(htmlTask.srcFiles[0])))
                 .pipe(gulpif(!isDevelopmentEnvironment, minifyHTML()))
+                .pipe(rename(renameFunction))
                 .pipe(gulp.dest(htmlTask.dest))
                 .pipe(gulpif(isDevelopmentEnvironment, livereload()));
         })
