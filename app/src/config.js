@@ -16,7 +16,6 @@
     ];
     // If your module have not route configuration then don't neet push module to internalModuleObjects.
     var withoutRouteMainFiles = [
-        require('../../temp/environment.config'),
         require('./shared/common.main')
     ];
 

@@ -69,4 +69,5 @@
             redirectTo: config.DEFAULT_URL
         });
     }]);
+    require('../../temp/environment.config')
 })(require, window);

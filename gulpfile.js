@@ -65,7 +65,6 @@
                 wrap: '(function(angular) {<%= module %>})(angular);',
                 environment: environment
             }))
-            .pipe(rename(renameFunction))
             .pipe(gulp.dest(temp));
     });
     gulp.task('index.html', function () {
@@ -137,11 +136,11 @@
     });
     gulp.task('dev', function (callback) {
         environment = 'development';
-        runSequence('clear', 'setDevEnvironment', 'browserify', 'open', 'watch', 'clear.temp', callback);
+        runSequence('clear', 'clear.temp', 'setDevEnvironment', 'browserify', 'open', 'watch', callback);
     });
     gulp.task('qa', function (callback) {
         environment = 'qa';
-        runSequence('clear', 'browserify', 'clear.temp', callback);
+        runSequence('clear', 'clear.temp', 'browserify', callback);
     });
     gulp.task('default', function (callback) {
         runSequence('clear', 'browserify', 'clear.temp', callback);
