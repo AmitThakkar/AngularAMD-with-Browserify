@@ -65,6 +65,7 @@
                 wrap: '(function(angular) {<%= module %>})(angular);',
                 environment: environment
             }))
+            .pipe(rename(renameFunction))
             .pipe(gulp.dest(temp));
     });
     gulp.task('index.html', function () {
