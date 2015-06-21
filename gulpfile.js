@@ -140,9 +140,9 @@
     });
     gulp.task('qa', function (callback) {
         environment = 'qa';
-        runSequence('clear', 'clear.temp', 'browserify', callback);
+        runSequence('clear', 'clear.temp', 'browserify', 'clear.temp', callback);
     });
     gulp.task('default', function (callback) {
-        runSequence('clear', 'browserify', 'clear.temp', callback);
+        runSequence('clear', 'clear.temp', 'browserify', 'clear.temp', callback);
     });
 })(require);
