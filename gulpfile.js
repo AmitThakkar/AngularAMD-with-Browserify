@@ -68,7 +68,7 @@
             .pipe(gulp.dest(temp));
     });
     gulp.task('index.html', function () {
-        return gulp.src('./app/index.html')
+        return gulp.src(srcFolder + '../index.html')
             .pipe(inject(gulp.src(destFolder + 'angular-amd*.js', {read: false}), {relative: true}))
             .pipe(gulpif(!isDevelopmentEnvironment, minifyHTML()))
             .pipe(gulp.dest('./build/'));
