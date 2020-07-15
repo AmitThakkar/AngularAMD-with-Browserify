@@ -27,7 +27,7 @@
     "angular": "^1.4.0",
     "angular-route": "^1.4.0",
     "jquery": "^2.1.4",
-    "lodash": "^3.9.3",
+    "lodash": "^4.17.19",
     "scriptjs": "^2.5.7"
   },
   "devDependencies": {
